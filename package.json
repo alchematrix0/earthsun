@@ -1,0 +1,22 @@
+{
+  "name": "earthsun",
+  "version": "1.0.0",
+  "description": "website for earthsun",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-desforets:desforets/earthsun.git"
+  },
+  "keywords": [
+    "web",
+    "development",
+    "js",
+    "css",
+    "html"
+  ],
+  "author": "desforets",
+  "license": "ISC"
+}
