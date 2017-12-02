@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Earth Sun</title>
+    <link rel="shortcut icon" href="./css/img/favicon.svg"/>
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/uikit.min.css">
     <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
@@ -17,7 +18,7 @@
           <div class="container">
             <div class="navbar-brand">
               <a class="navbar-item">
-                <img src="./css/img/logo-horizontal.svg" alt="Logo">
+                <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
               </a>
               <button class="button navbar-burger" style="margin-righT: 0.5em;">
                 <a class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></a>
@@ -50,7 +51,11 @@
               </h2>
             </div>
             <div class="column is-12-mobile">
-              <img src="./css/img/group-5pk.png" style="max-height: 70vh;" alt="product 5 pack">
+              <picture>
+               <source srcset="./css/img/group-5pk-sm.png 1x" media="(max-width: 300px)">
+               <source srcset="./css/img/group-5pk-hi.png 1x" media="(min-width: 301px)">
+               <img src="./css/img/group-5pk-low.png" style="max-height: 60vh;" alt="">
+              </picture>
             </div>
           </div>
          </div>
