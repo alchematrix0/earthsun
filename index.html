@@ -2,40 +2,89 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Earth Sun</title>
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/bulma.css">
-    <link rel="stylesheet" href="./css/uikit/uikit.min.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="/css/master.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="./js/uikit/uikit.js"></script>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/uikit.min.css">
+    <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
     <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
-    <script type="text/javascript" src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/bulma.css">
   </head>
-  <body class="uk-cover-container uk-height-viewport">
-      <!-- <img src="./css/img/candle.jpg" alt="" uk-cover> -->
-    <header>
-      <div class="uk-position-relative">
-        <div class="uk-position-top">
-          <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
-            <div class="uk-navbar-left">
-              <ul class="uk-navbar-nav">
-                <span class="uk-navbar-item uk-logo uk-light logo">
-                  EarthSun
+  <body>
+    <section class="hero is-warning is-bold is-fullheight">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a class="navbar-item">
+                <img src="./css/img/logo-horizontal.svg" alt="Logo">
+              </a>
+              <button class="button navbar-burger" style="margin-righT: 0.5em;">
+                <a class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></a>
+              </button>
+            </div>
+            <div class="navbar-menu">
+              <div class="navbar-end">
+                <span class="navbar-item is-pulled-right">
+                  <a class="button is-success is-inverted">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></span>
+                  </a>
                 </span>
-              </ul>
+              </div>
             </div>
-            <div class="uk-navbar-right">
-              <ul class="uk-navbar-nav">
-                <span class="uk-icon uk-margin-medium-right uk-light" uk-icon="icon: cart; ratio: 1.5"></span>
-              </ul>
-            </div>
-          </nav>
-        </div>
+          </div>
+        </header>
       </div>
-    </header>
+      <div class="hero-body">
+         <div class="container">
+           <div class="columns level is-centered">
+            <div class="column is-seven is-12-mobile">
+              <h1 class="title is-1 is-spaced">
+                Organic skin care & cosmetics
+              </h1>
+              <h2 class="subtitle is-3">
+                Made with <span uk-icon="icon: heart"></span> and Xeolite
+              </h2>
+              <h2 class="subtitle is-5">
+                in beautiful British Columbia
+              </h2>
+            </div>
+            <div class="column is-12-mobile">
+              <img src="./css/img/group-5pk.png" style="max-height: 70vh;" alt="product 5 pack">
+            </div>
+          </div>
+         </div>
+       </div>
+       <div class="hero-foot">
+         <style media="screen">
+         .tabs.is-toggle a {
+           border-color: #363636;
+           border-radius: 0;
+         }
+         .tabs.is-toggle li:first-child a {
+           border-radius: 0;
+         }
 
+         .tabs.is-toggle li:last-child a {
+           border-radius: 0;
+         }
+         </style>
+         <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+           <div class="container">
+             <ul>
+               <li>
+                 <a>Shop</a>
+               </li>
+               <li class="is-hidden-mobile">
+                 <a>Wholesale</a>
+               </li>
+               <li>
+                 <a>About</a>
+               </li>
+             </ul>
+           </div>
+         </nav>
+       </div>
+    </section>
   </body>
-
 </html>
