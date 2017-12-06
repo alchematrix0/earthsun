@@ -21,28 +21,29 @@
               <a href="./index.html" class="navbar-item">
                 <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
               </a>
-              <button class="button navbar-burger" style="margin-right: 0.5em;">
-                <a class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></a>
-              </button>
-            </div>
-            <div class="navbar-menu">
-              <div class="navbar-end">
-                <span class="navbar-item is-pulled-right dropdown is-right is-hoverable">
-
-                  <a class="button is-success is-inverted dropdown-trigger">
-                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></span>
-                    <span class="uk-badge" id="cartBadge" style="margin-left: 0.5em; display: none;">0</span>
-                  </a>
-
-                  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                    <div class="dropdown-content" id="dropdownContent">
-                      <div class="dropdown-item" id="cart-default">
-                        <p>You haven't added any items yet</p>
-                      </div>
+              <style media="screen">
+                .cart {
+                  position: fixed;
+                  right: 2vw;
+                  z-index: 100;
+                }
+              </style>
+              <div class="dropdown is-right is-hoverable navbar-item cart">
+                <a class="button is-outlined dropdown-trigger">
+                  <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></span>
+                  <span class="uk-badge" id="cartBadge" style="margin-left: 0.5em; display: none;">0</span>
+                </a>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content" id="dropdownContent">
+                    <div class="dropdown-item" id="cart-default">
+                      <p>You haven't added any items yet</p>
+                    </div>
+                    <div class="dropdown-item" style="display: none;" id="total-list-item">
+                      <p><strong>Shipping: <span class="is-pulled-right" id="cart-shipping"></span></strong></p>
+                      <p><strong>Total: <span class="is-pulled-right" id="cart-total"></span></strong></p>
                     </div>
                   </div>
-
-                </span>
+                </div>
               </div>
             </div>
           </div>
@@ -131,7 +132,7 @@
                     <div class="content has-text-centered">
                       <h6 class="title">Coco Bum</h6>
                       <hr>
-                      <a id="order4" data-style="Focus" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order4" data-style="Focus" data-sku="ES-BUM-010" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>
@@ -152,7 +153,7 @@
                     <div class="content has-text-centered">
                       <h6 class="title">Sun Child</h6>
                       <hr>
-                      <a id="order5" data-style="Breathe" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order5" data-style="Breathe" data-sku="ES-CHI-010" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>
@@ -173,7 +174,7 @@
                     <div class="content has-text-centered">
                       <h6 class="title">5 Pack</h6>
                       <hr>
-                      <a id="order6" data-style="Breathe" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order6" data-style="Breathe" data-sku="ES-5PK" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>
@@ -190,7 +191,7 @@
               <div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="./css/img/products/BUM-2PK.png" alt="Beleria product item">
+                    <img src="./css/img/products/BEL-BUM-2PK.png" alt="Beleria product item">
                   </figure>
                 </div>
                 <div class="card-content">
@@ -198,7 +199,7 @@
                     <div class="content has-text-centered">
                       <h6 class="title">Coco Bum + Beleia</h6>
                       <hr>
-                      <a id="order7" data-style="Focus" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order7" data-style="Focus" data-sku="BEL-BUM-2PK" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>
@@ -217,9 +218,9 @@
                 <div class="card-content">
                   <div class="">
                     <div class="content has-text-centered">
-                      <h6 class="title">Sun Chil + Sun Sheer</h6>
+                      <h6 class="title">Sun Child + Sun Sheer</h6>
                       <hr>
-                      <a id="order8" data-style="Breathe" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order8" data-style="Breathe" data-sku="SUN-CHI-2PK" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>
@@ -240,7 +241,7 @@
                     <div class="content has-text-centered">
                       <h6 class="title">3 Pack</h6>
                       <hr>
-                      <a id="order9" data-style="Breathe" class="button is-primary is-outlined orderButton">Add to cart</a>
+                      <a id="order9" data-style="Breathe" data-sku="BEL-BIO-SUN-3PK" class="button is-primary is-outlined orderButton">Add to cart</a>
                       <a class="button is-secondary is-outlined shareButton">Share</a>
                       <br>
                     </div>

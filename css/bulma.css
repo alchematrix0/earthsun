@@ -7072,7 +7072,7 @@ html.has-navbar-fixed-bottom {
           transform: translateY(-5px) rotate(-45deg);
 }
 
-.navbar-menu {
+.navbar-menu:not(.cart) {
   display: none;
 }
 

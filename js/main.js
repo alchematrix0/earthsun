@@ -1,11 +1,10 @@
 // Store API
 
-let orderButtons = document.querySelectorAll('.orderButton')
-let addFirstItem = true
 const inventory = {
   'ES-BEL-010': {
     thumb: '',
     price: 20,
+    shipping: 4,
     title: 'Beleai',
     description: 'b stuff',
     quantity: 0
@@ -13,6 +12,7 @@ const inventory = {
   'ES-BIO-010': {
     thumb: '',
     price: 20,
+    shipping: 4,
     title: 'Bio Shield',
     description: 'shield stuff',
     quantity: 0
@@ -20,39 +20,105 @@ const inventory = {
   'ES-SUN-008': {
     thumb: '',
     price: 20,
+    shipping: 4,
     title: 'Sun Sheer',
     description: 'sheerly sun',
     quantity: 0
+  },
+  'ES-BUM-010': {
+    thumb: '',
+    price: 20,
+    shipping: 6,
+    title: 'Coco Bum',
+    description: 'Coconut',
+    quantity: 0
+  },
+  'ES-CHI-010': {
+    thumb: '',
+    price: 20,
+    shipping: 4,
+    title: 'Sun Child',
+    description: 'Sun child',
+    quantity: 0
+  },
+  'ES-5PK': {
+    thumb: '',
+    price: 75,
+    shipping: 8,
+    title: '5 Pack',
+    description: 'Earth sun pack of 5: all of our signature products in one',
+    quantity: 0
+  },
+  'BEL-BUM-2PK': {
+    thumb: '',
+    price: 35,
+    shipping: 6,
+    title: 'Beleai + CocoBum 2 pack',
+    description: '',
+    quantity: 0
+  },
+  'SUN-CHI-2PK': {
+    thumb: '',
+    price: 35,
+    shipping: 6,
+    title: 'Sun Sheer + Sun Child',
+    description: 'Sun sheer and Sun Child two pack',
+    quantity: 0
+  },
+  'BEL-BIO-SUN-3PK': {
+    thumb: '',
+    price: 20,
+    shipping: 7,
+    title: 'Beleai, Sun Sheer and Bio Shield 3 pack',
+    description: '3 pack of our most popular products',
+    quantity: 0
+  },
+  subtotal: {
+    tally: 0,
+    shipping: 0,
+    grandTotal: 0
   }
 }
+
 sessionStorage.clear()
 let cart = inventory
 let total = 0
+let subtotal = 0
 sessionStorage.setItem('cart', JSON.stringify(cart))
 
+let orderButtons = document.querySelectorAll('.orderButton')
 orderButtons.forEach(button => {
 
   button.onclick = (item) => {
 
-    let sku = item.target.dataset.sku;
-    cart[sku].quantity++
+    let sku = item.target.dataset.sku; // grab sku from data-sku
+    cart[sku].quantity++              // inc quantity in cart object
+    cart['subtotal'].tally += inventory[sku].price
+    cart['subtotal'].shipping += inventory[sku].shipping
+    cart['subtotal'].grandTotal += (inventory[sku].price + inventory[sku].shipping)
 
-    sessionStorage.setItem(sku, cart[sku].quantity)
-    sessionStorage.setItem('cart', JSON.stringify(cart))
+    sessionStorage.setItem(sku, cart[sku].quantity) // update sessionStorage with quantity
+    sessionStorage.setItem('cart', JSON.stringify(cart)) // update sessionStore global cart obj with quantity
 
-    let dropdownContent = document.getElementById('dropdownContent');
-    let hr = document.createElement('hr')
+    let dropdownContent = document.getElementById('dropdownContent') // target the cart list dropdown element
+    let hr = document.createElement('hr') // create empty hr element
     hr.className = 'dropdown-divider'
     hr.id = `hr-${sku}`
 
-    if (!total) {
-      let defaultDropdownItem = document.getElementById('cart-default')
-      defaultDropdownItem.style.display = 'none'
-      document.getElementById('cartBadge').style.display = 'block'
-      addFirstItem = false
-    } else if (cart[sku].quantity === 1 ) {
-      dropdownContent.appendChild(hr)
+    document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
+    document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+
+    if (!total) { // shopping cart list is at 0 currently
+      let defaultDropdownItem = document.getElementById('cart-default') // target the placeholder <li> in cart list
+      defaultDropdownItem.style.display = 'none' // remove it
+      let badge = document.getElementById('cartBadge') // target the badge element next to cart
+      badge.style.display = 'block' // show it
+      document.getElementById('total-list-item').style.display = 'block'
+    } else if (cart[sku].quantity === 1 ) { // if adding to the first element, append an <hr> to that initial element
+      dropdownContent.insertBefore(hr, totalDiv)
     }
+
+    // init and create the new <li> and its delete button
 
     let newContent = document.createTextNode(`${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price})`);
     let removeButton = document.createElement('a')
@@ -61,24 +127,24 @@ orderButtons.forEach(button => {
     removeButton.setAttribute('data-sku', `${sku}`)
     removeButton.onclick = removeItemFromCart
 
-    if (cart[sku].quantity > 1) {
+    if (cart[sku].quantity > 1) { // if entry exists, just increase the quantity ie: 2x
       let dropdownDiv = document.getElementById(`cart-${sku}`)
-      dropdownDiv.innerHTML = `${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price})`
+      dropdownDiv.innerHTML = `${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price * cart[sku].quantity})`
       dropdownDiv.appendChild(removeButton);
-    } else {
+    } else { // new entry, update the badge, create a new <li> and append it
       total++;
       document.getElementById('cartBadge').innerHTML = total;
-
-      let newDropdownDiv = document.createElement('div');
+      let newDropdownDiv = document.createElement('div'); // add entry to list
       newDropdownDiv.className = 'dropdown-item'
       newDropdownDiv.id = `cart-${sku}`
       newDropdownDiv.setAttribute('data-rank', total)
 
-      newDropdownDiv.appendChild(newContent);
-      newDropdownDiv.appendChild(removeButton);
-
-      dropdownContent.appendChild(newDropdownDiv);
+      newDropdownDiv.appendChild(newContent); // add content to <li>
+      newDropdownDiv.appendChild(removeButton); // give it a remove button
+      totalDiv = document.getElementById('total-list-item')
+      dropdownContent.insertBefore(newDropdownDiv, totalDiv); // append it to the cart list
     }
+
 
   }
 })
@@ -87,6 +153,9 @@ removeItemFromCart = (item) => {
 
   let sku = item.target.dataset.sku
   cart[sku].quantity = 0
+  cart['subtotal'].tally -= inventory[sku].price
+  cart['subtotal'].shipping -= inventory[sku].shipping
+  cart['subtotal'].grandTotal -= (inventory[sku].price + inventory[sku].shipping)
   sessionStorage.setItem('cart', JSON.stringify(cart))
 
   let dropdownDiv = document.getElementById(`cart-${sku}`)
@@ -97,11 +166,13 @@ removeItemFromCart = (item) => {
     }
   }
   dropdownDiv.remove()
-
   total--
+  document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
+  document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
   document.getElementById('cartBadge').innerHTML = total;
   if (total === 0) {
     let defaultDropdownItem = document.getElementById('cart-default')
     defaultDropdownItem.style.display = 'block'
+    document.getElementById('total-list-item').style.display = 'none'
   }
 }
