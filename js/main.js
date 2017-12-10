@@ -74,86 +74,17 @@ const inventory = {
     quantity: 0
   },
   subtotal: {
-    tally: 0,
+    subtotal: 0,
     shipping: 0,
     grandTotal: 0
   }
 }
 
-sessionStorage.clear()
-let cart = inventory
-let total = 0
-let subtotal = 0
-sessionStorage.setItem('cart', JSON.stringify(cart))
-
-let orderButtons = document.querySelectorAll('.orderButton')
-orderButtons.forEach(button => {
-
-  button.onclick = (item) => {
-
-    let sku = item.target.dataset.sku; // grab sku from data-sku
-    cart[sku].quantity++              // inc quantity in cart object
-    cart['subtotal'].tally += inventory[sku].price
-    cart['subtotal'].shipping += inventory[sku].shipping
-    cart['subtotal'].grandTotal += (inventory[sku].price + inventory[sku].shipping)
-
-    sessionStorage.setItem(sku, cart[sku].quantity) // update sessionStorage with quantity
-    sessionStorage.setItem('cart', JSON.stringify(cart)) // update sessionStore global cart obj with quantity
-
-    let dropdownContent = document.getElementById('dropdownContent') // target the cart list dropdown element
-    let hr = document.createElement('hr') // create empty hr element
-    hr.className = 'dropdown-divider'
-    hr.id = `hr-${sku}`
-
-    document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
-    document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
-
-    if (!total) { // shopping cart list is at 0 currently
-      let defaultDropdownItem = document.getElementById('cart-default') // target the placeholder <li> in cart list
-      defaultDropdownItem.style.display = 'none' // remove it
-      let badge = document.getElementById('cartBadge') // target the badge element next to cart
-      badge.style.display = 'block' // show it
-      document.getElementById('total-list-item').style.display = 'block'
-    } else if (cart[sku].quantity === 1 ) { // if adding to the first element, append an <hr> to that initial element
-      dropdownContent.insertBefore(hr, totalDiv)
-    }
-
-    // init and create the new <li> and its delete button
-
-    let newContent = document.createTextNode(`${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price})`);
-    let removeButton = document.createElement('a')
-    removeButton.className = 'delete is-pulled-right'
-    removeButton.id = 'delete'
-    removeButton.setAttribute('data-sku', `${sku}`)
-    removeButton.onclick = removeItemFromCart
-
-    if (cart[sku].quantity > 1) { // if entry exists, just increase the quantity ie: 2x
-      let dropdownDiv = document.getElementById(`cart-${sku}`)
-      dropdownDiv.innerHTML = `${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price * cart[sku].quantity})`
-      dropdownDiv.appendChild(removeButton);
-    } else { // new entry, update the badge, create a new <li> and append it
-      total++;
-      document.getElementById('cartBadge').innerHTML = total;
-      let newDropdownDiv = document.createElement('div'); // add entry to list
-      newDropdownDiv.className = 'dropdown-item'
-      newDropdownDiv.id = `cart-${sku}`
-      newDropdownDiv.setAttribute('data-rank', total)
-
-      newDropdownDiv.appendChild(newContent); // add content to <li>
-      newDropdownDiv.appendChild(removeButton); // give it a remove button
-      totalDiv = document.getElementById('total-list-item')
-      dropdownContent.insertBefore(newDropdownDiv, totalDiv); // append it to the cart list
-    }
-
-
-  }
-})
-
 removeItemFromCart = (item) => {
 
   let sku = item.target.dataset.sku
   cart[sku].quantity = 0
-  cart['subtotal'].tally -= inventory[sku].price
+  cart['subtotal'].subtotal -= inventory[sku].price
   cart['subtotal'].shipping -= inventory[sku].shipping
   cart['subtotal'].grandTotal -= (inventory[sku].price + inventory[sku].shipping)
   sessionStorage.setItem('cart', JSON.stringify(cart))
@@ -176,3 +107,119 @@ removeItemFromCart = (item) => {
     document.getElementById('total-list-item').style.display = 'none'
   }
 }
+
+let genContent = (cart = inventory, sku) => document.createTextNode(`${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price})`);
+let createRemoveButton = (sku) => {
+  let removeButton = document.createElement('a')
+  removeButton.className = 'delete is-pulled-right'
+  removeButton.id = 'delete'
+  removeButton.setAttribute('data-sku', `${sku}`)
+  removeButton.onclick = removeItemFromCart
+  return removeButton
+}
+
+let total = 0
+let subtotal = 0
+let cart = inventory
+loadExistingCart = (cart) => {
+  for (sku in cart) {
+    if (cart[sku].quantity) {
+
+      if (!total) {
+        let defaultDropdownItem = document.getElementById('cart-default') // target the placeholder <li> in cart list
+        defaultDropdownItem.style.display = 'none' // remove it
+        let badge = document.getElementById('cartBadge') // target the badge element next to cart
+        badge.style.display = 'block' // show it
+        document.getElementById('total-list-item').style.display = 'block'
+      }
+
+      total++
+
+      document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
+      document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+      document.getElementById('cartBadge').innerHTML = total;
+
+      let newDropdownDiv = document.createElement('div'); // add entry to list
+      newDropdownDiv.className = 'dropdown-item'
+      newDropdownDiv.id = `cart-${sku}`
+      newDropdownDiv.setAttribute('data-rank', total)
+
+      let newContent = genContent(cart, sku)
+      let removeButton = createRemoveButton(sku)
+      newDropdownDiv.appendChild(newContent); // add content to <li>
+      newDropdownDiv.appendChild(removeButton); // give it a remove button
+
+      totalDiv = document.getElementById('total-list-item')
+      dropdownContent.insertBefore(newDropdownDiv, totalDiv); // append it to the cart list
+
+      if (total > 0) {
+        let hr = document.createElement('hr') // create empty hr element
+        hr.className = 'dropdown-divider'
+        hr.id = `hr-${sku}`
+        dropdownContent.insertBefore(hr, totalDiv)
+      }
+    }
+  }
+}
+if (!sessionStorage.cart) { // no cart in session, set to blank
+  sessionStorage.setItem('cart', JSON.stringify(inventory))
+  sessionStorage.setItem('ts', Date.now())
+} else { // cart in session, parse and load cart
+  cart = JSON.parse(sessionStorage.cart)
+  loadExistingCart(cart)
+}
+
+let orderButtons = document.querySelectorAll('.orderButton')
+orderButtons.forEach(button => {
+
+  button.onclick = (item) => {
+
+    let sku = item.target.dataset.sku; // grab sku from data-sku
+    cart[sku].quantity++              // inc quantity in cart object
+    cart['subtotal'].subtotal += inventory[sku].price
+    cart['subtotal'].shipping += inventory[sku].shipping
+    cart['subtotal'].grandTotal += (inventory[sku].price + inventory[sku].shipping)
+
+    sessionStorage.setItem(sku, cart[sku].quantity) // update sessionStorage with quantity
+    sessionStorage.setItem('cart', JSON.stringify(cart)) // update sessionStore global cart obj with quantity
+
+    let dropdownContent = document.getElementById('dropdownContent') // target the cart list dropdown element
+    let hr = document.createElement('hr') // create empty hr element
+    hr.className = 'dropdown-divider'
+    hr.id = `hr-${sku}`
+
+    document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
+    document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+
+    if (!total) { // shopping cart list is at 0 currently
+      let defaultDropdownItem = document.getElementById('cart-default') // target the placeholder <li> in cart list
+      defaultDropdownItem.style.display = 'none' // remove it
+      let badge = document.getElementById('cartBadge') // target the badge element next to cart
+      badge.style.display = 'block' // show it
+      document.getElementById('total-list-item').style.display = 'block'
+    } else if (cart[sku].quantity === 1 ) { // if adding to the first element, and for the first time on that sku, append an <hr> to that initial element
+      dropdownContent.insertBefore(hr, totalDiv)
+    }
+
+    let newContent = genContent(cart, sku)
+    let removeButton = createRemoveButton(sku)
+
+    if (cart[sku].quantity > 1) { // if entry exists, just increase the quantity ie: 2x
+      let dropdownDiv = document.getElementById(`cart-${sku}`)
+      dropdownDiv.innerHTML = `${cart[sku].quantity}x ${cart[sku].title} ($${cart[sku].price * cart[sku].quantity})`
+      dropdownDiv.appendChild(removeButton);
+    } else { // new entry, update the badge, create a new <li> and append it
+      total++;
+      document.getElementById('cartBadge').innerHTML = total;
+      let newDropdownDiv = document.createElement('div'); // add entry to list
+      newDropdownDiv.className = 'dropdown-item'
+      newDropdownDiv.id = `cart-${sku}`
+      newDropdownDiv.setAttribute('data-rank', total)
+
+      newDropdownDiv.appendChild(newContent); // add content to <li>
+      newDropdownDiv.appendChild(removeButton); // give it a remove button
+      totalDiv = document.getElementById('total-list-item')
+      dropdownContent.insertBefore(newDropdownDiv, totalDiv); // append it to the cart list
+    }
+  }
+})

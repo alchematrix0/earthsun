@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Earth Sun</title>
+    <link rel="shortcut icon" href="./css/img/favicon.svg"/>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/uikit.min.css">
+    <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
+    <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="./css/bulma.css">
+    <link rel="stylesheet" href="./css/master.css">
+  </head>
+  <body>
+    <section class="hero is-warning is-bold is-fullheight">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a href="./index.html" class="navbar-item">
+                <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
+              </a>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-6 is-offset-1">
+              <div class="box notification has-text-centered" id="checkoutParent">
+                <style media="screen">
+                  .media + .media {
+                    margin-top: 0;
+                  }
+                </style>
+                <article class="media" id="checkoutTemplate">
+                  <figure class="media-left">
+                    <p class="image is-96x96">
+                      <img src="https://bulma.io/images/placeholders/64x64.png">
+                    </p>
+                  </figure>
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <strong id="itemName">There are no items in your cart!</strong>
+                        <br>
+                        <span></span>
+                        <br>
+                        <span></span>
+                      </p>
+                    </div>
+                    <nav class="level is-mobile">
+                      <div class="level-left">
+                        <a class="level-item">
+                          <span class="icon is-small"><i class="fa fa-reply"></i></span>
+                        </a>
+                        <a class="level-item">
+                          <span class="icon is-small"><i class="fa fa-retweet"></i></span>
+                        </a>
+                        <a class="level-item">
+                          <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                        </a>
+                      </div>
+                    </nav>
+                  </div>
+                  <div class="media-right"><button class="delete"></button></div>
+                </article>
+
+              </div>
+            </div>
+            <div class="column is-4">
+              <div class="box notification is-link" id="checkoutTotal">
+                <style media="screen">
+                  li {
+                    margin-bottom: 0.5rem;
+                  }
+                  .hero.is-warning div.title {
+                    color: whitesmoke;
+                  }
+                  .buttons {
+                    justify-content: space-between;
+                  }
+                </style>
+                <div class="title">
+                  Order Summary
+                </div>
+                <hr>
+                <ul>
+                  <li>
+                    <p id="subtotal">Subtotal: </p>
+                  </li>
+                  <li>
+                    <p id="shipping">Shipping: </p>
+                  </li>
+                  <li>
+                    <p id="total">Order total: </p>
+                  </li>
+                  <br>
+                  <li>
+                    <div class="buttons">
+                      <a href="./store.html" class="button">Keep shopping</a>
+                      <button class="button is-success">Checkout</button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <style media="screen">
+          .tabs.is-toggle a {
+            border-color: #363636;
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:first-child a {
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:last-child a {
+            border-radius: 0;
+          }
+          .dropdown-menu {
+            min-width: 15rem;
+          }
+        </style>
+        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li>
+                <a href="./store.html">Shop</a>
+              </li>
+              <li class="is-hidden-mobile">
+                <a>Wholesale</a>
+              </li>
+              <li>
+                <a>About</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </body>
+  <script type="text/javascript" src="./js/checkout.js"></script>
+</html>
