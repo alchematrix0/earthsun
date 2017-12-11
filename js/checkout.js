@@ -171,3 +171,73 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
   cart = JSON.parse(sessionStorage.cart)
   loadCartForCheckout(cart)
 }
+
+/*  ============== */
+/*  === Stripe === */
+/*  ============== */
+
+var stripe = Stripe('pk_test_yTXzIGll1qz4bb0a19zOku70');
+var elements = stripe.elements();
+var style = {
+  base: {
+    color: '#32325d',
+    lineHeight: '18px',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4',
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+const card = elements.create('card', {style})
+card.mount('#card-element')
+card.addEventListener('change', event => {
+  var displayError = document.getElementById('card-errors')
+  if (event.error) { displayError.textContent = event.error.messages
+  } else { displayError.textContent = ''}
+})
+var myPostalCodeField = document.querySelector('input[name="postal"]')
+myPostalCodeField.addEventListener('change', function(event) {
+  card.update({value: {postalCode: event.target.value}})
+});
+
+// Handle form submission
+var form = document.getElementById('payment-form');
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  console.dir(event.target)
+  const customer = {
+    email: 'test@earthsun.ca'
+  }
+  stripe.createToken(card).then(result => {
+    if (result.error) {
+      console.log('createToken hit an error')
+      console.error(result.error)
+      // Inform the user if there was an error
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server
+      axios.post('http://localhost:3000/charge', {customer, order: JSON.parse(sessionStorage.cart), token: result.token},
+        {
+          headers:{
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
+      ).then(response => {
+        console.log(response.data);
+
+      }).catch(error => {
+        console.error(error)
+      })
+    }
+  })
+})
