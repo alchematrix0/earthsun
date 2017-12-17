@@ -1,5 +1,5 @@
 // Store API
-
+serverURL = 'http://localhost:3000/charge'
 const inventory = {
   'ES-BEL-010': {
     thumb: 'thumb.png',
@@ -212,7 +212,7 @@ var form = document.getElementById('payment-form');
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  console.dir(event.target)
+  document.getElementById('submitPaymentButton').className = 'is-loading button is-success'
   const customer = {
     email: 'test@earthsun.ca'
   }
@@ -225,7 +225,7 @@ form.addEventListener('submit', event => {
       errorElement.textContent = result.error.message;
     } else {
       // Send the token to your server
-      axios.post('http://localhost:3000/charge', {customer, order: JSON.parse(sessionStorage.cart), token: result.token},
+      axios.post(serverURL, {customer, order: JSON.parse(sessionStorage.cart), token: result.token},
         {
           headers:{
             'Content-type': 'application/json',
@@ -233,9 +233,10 @@ form.addEventListener('submit', event => {
           }
         }
       ).then(response => {
-        console.log(response.data);
-
+        window.location.href = './thankyou.html'
+        sessionStorage.setItem('charge', JSON.stringify(response.data))
       }).catch(error => {
+        './error.html'
         console.error(error)
       })
     }
