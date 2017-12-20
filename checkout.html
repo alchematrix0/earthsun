@@ -86,7 +86,7 @@
                   </li>
                   <br>
                   <li>
-                    <form action="/charge" method="post" id="payment-form">
+                    <form action="/charge" method="post" id="payment-form" name="checkout-form">
                       <div class="field is-horizontal">
                         <div class="field-body">
                           <div class="field">
@@ -105,7 +105,7 @@
                         <div class="field-body">
                           <div class="field">
                             <div class="control">
-                              <input class="input" type="text" placeholder="Street address">
+                              <input class="input" type="text" name="address" placeholder="Street address">
                             </div>
                           </div>
                         </div>
@@ -114,12 +114,17 @@
                         <div class="field-body">
                           <div class="field">
                             <p class="control">
+                              <input class="input" type="text" name="city" placeholder="City">
+                            </p>
+                          </div>
+                          <div class="field">
+                            <p class="control">
                               <input class="input" type="text" name="state" placeholder="State / Prov">
                             </p>
                           </div>
                           <div class="field">
                             <div class="select">
-                              <select>
+                              <select name="country">
                                 <option>Canada</option>
                                 <option>US</option>
                               </select>

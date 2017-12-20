@@ -1,5 +1,5 @@
 // Store API
-serverURL = 'http://localhost:3000/charge'
+serverURL = 'http://localhost:3000/order'
 const inventory = {
   'ES-BEL-010': {
     thumb: 'thumb.png',
@@ -176,7 +176,7 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 /*  === Stripe === */
 /*  ============== */
 
-var stripe = Stripe('pk_test_yTXzIGll1qz4bb0a19zOku70');
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var elements = stripe.elements();
 var style = {
   base: {
@@ -212,9 +212,33 @@ var form = document.getElementById('payment-form');
 
 form.addEventListener('submit', event => {
   event.preventDefault();
+  const cart = JSON.parse(sessionStorage.cart)
   document.getElementById('submitPaymentButton').className = 'is-loading button is-success'
   const customer = {
-    email: 'test@earthsun.ca'
+    email: event.target.email.value,
+    shipping: {
+      name: `${event.target.name.value}`,
+      address: {
+        line1: `${event.target.address.value}`,
+        city: `${event.target.city.value}`,
+        state: `${event.target.state.value}`,
+        country:  `${event.target.country.value}`,
+        postal_code: `${event.target.postal.value}`
+      }
+    }
+  }
+  const order = []
+  for (sku in cart) {
+    if (cart[sku].quantity > 0) {
+      let item = cart[sku]
+      order.push({
+        amount: item.price * 100,
+        currency: 'cad',
+        parent: sku,
+        quantity: item.quantity,
+        type: 'sku'
+      })
+    }
   }
   stripe.createToken(card).then(result => {
     if (result.error) {
@@ -225,7 +249,8 @@ form.addEventListener('submit', event => {
       errorElement.textContent = result.error.message;
     } else {
       // Send the token to your server
-      axios.post(serverURL, {customer, order: JSON.parse(sessionStorage.cart), token: result.token},
+      console.dir(order)
+      axios.post(serverURL, {customer, order, token: result.token},
         {
           headers:{
             'Content-type': 'application/json',
@@ -233,10 +258,12 @@ form.addEventListener('submit', event => {
           }
         }
       ).then(response => {
+        console.dir('response')
         window.location.href = './thankyou.html'
         sessionStorage.setItem('charge', JSON.stringify(response.data))
       }).catch(error => {
-        './error.html'
+        console.log('returned an error')
+        window.location.href = './error.html'
         console.error(error)
       })
     }
