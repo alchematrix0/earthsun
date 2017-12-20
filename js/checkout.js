@@ -176,7 +176,7 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 /*  === Stripe === */
 /*  ============== */
 
-var stripe = Stripe('pk_test_yTXzIGll1qz4bb0a19zOku70');
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var elements = stripe.elements();
 var style = {
   base: {
