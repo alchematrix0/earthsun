@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Earth Sun</title>
+    <link rel="shortcut icon" href="./css/img/favicon.svg"/>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/uikit.min.css">
+    <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
+    <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="./css/bulma.css">
+    <link rel="stylesheet" href="./css/master.css">
+  </head>
+  <body>
+    <section class="hero is-warning is-bold is-fullheight">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a href="./index.html" class="navbar-item">
+                <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
+              </a>
+              <!-- style media="screen">
+                .cart {
+                  position: fixed;
+                  right: 2vw;
+                  z-index: 100;
+                }
+              </style>
+              <div class="dropdown is-right is-hoverable navbar-item cart">
+                <a href="./checkout.html" class="button is-outlined dropdown-trigger">
+                  <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: cart;"></span>
+                  <span class="uk-badge" id="cartBadge" style="margin-left: 0.5em; display: none;">0</span>
+                </a>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content" id="dropdownContent">
+                    <div class="dropdown-item" id="cart-default">
+                      <p>You haven't added any items yet</p>
+                    </div>
+                    <div class="dropdown-item" style="display: none;" id="total-list-item">
+                      <p><strong>Shipping: <span class="is-pulled-right" id="cart-shipping"></span></strong></p>
+                      <p><strong>Total: <span class="is-pulled-right" id="cart-total"></span></strong></p>
+                      <p class="level has-text-centered" style="margin-top: 1rem;"><a class="button is-info level-item" href="./checkout.html">Proceed to checkout</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </header>
+      </div>
+      <div class="hero-body">
+        <div class="container" style="padding-right: 3em;">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Contact</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input class="input" type="text" placeholder="Name">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: user;"></span>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control is-expanded has-icons-left has-icons-right">
+                  <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
+                  </span>
+                  <span class="icon is-small is-right">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: check;"></span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input class="input" type="text" placeholder="Phone number">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: receiver;"></span>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control is-expanded has-icons-left has-icons-right">
+                  <input class="input is-success" placeholder="Company" value="">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: world;"></span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Department</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select>
+                      <option>Purchasing</option>
+                      <option>Sales</option>
+                      <option>Marketing</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label">Previous customer?</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <label class="radio">
+                    <input type="radio" name="member">
+                    Yes
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="member">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Addresses</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input class="input" type="text" placeholder="Shipping">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: home;"></span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label"></div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left has-icons-right">
+                  <input class="input" placeholder="Billing">
+                  <span class="icon is-small is-left">
+                    <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: file-edit;"></span>
+                  </span>
+                </p>
+              </div>
+              <div class="field is-narrow">
+                <div class="control" style="padding: 0.25em;">
+                  <label class="checkbox">
+                    <input name="sameAddres" type="checkbox" style="vertical-align: bottom">
+                    Same as shipping
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Question</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea class="textarea" placeholder="Additional comments or requests"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <button class="button is-primary">
+                    Create Wholesale Account
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-foot">
+        <style media="screen">
+          .tabs.is-toggle a {
+            border-color: #363636;
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:first-child a {
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:last-child a {
+            border-radius: 0;
+          }
+          .dropdown-menu {
+            min-width: 15rem;
+          }
+        </style>
+        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li>
+                <a>Shop</a>
+              </li>
+              <li class="is-active">
+                <a>Wholesale</a>
+              </li>
+              <li>
+                <a>About</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </body>
+  <script type="text/javascript" src="./js/main.js"></script>
+</html>
