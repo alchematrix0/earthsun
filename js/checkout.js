@@ -1,5 +1,6 @@
 // Store API
 serverURL = 'http://localhost:3000/order'
+
 const inventory = {
   'ES-BEL-010': {
     thumb: 'thumb.png',
@@ -202,13 +203,13 @@ card.addEventListener('change', event => {
   if (event.error) { displayError.textContent = event.error.messages
   } else { displayError.textContent = ''}
 })
+
 var myPostalCodeField = document.querySelector('input[name="postal"]')
 myPostalCodeField.addEventListener('change', function(event) {
   card.update({value: {postalCode: event.target.value}})
-});
+})
 
-// Handle form submission
-var form = document.getElementById('payment-form');
+var form = document.getElementById('payment-form')
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -258,13 +259,12 @@ form.addEventListener('submit', event => {
           }
         }
       ).then(response => {
-        console.dir('response')
-        window.location.href = './thankyou.html'
         sessionStorage.setItem('charge', JSON.stringify(response.data))
+        window.location.href = './thankyou.html'
       }).catch(error => {
-        console.log('returned an error')
-        window.location.href = './error.html'
         console.error(error)
+        sessionStorage.setItem('paymentError', JSON.stringify(error))
+        window.location.href = './error.html'
       })
     }
   })
