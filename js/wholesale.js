@@ -1,6 +1,8 @@
-var serverURL = 'http://localhost:3000/newcustomer'
+var serverURL = 'http://localhost:3000'
 var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
+
 var elements = stripe.elements();
+
 var style = {
   base: {
     color: '#32325d',
@@ -17,14 +19,14 @@ var style = {
     iconColor: '#fa755a'
   }
 };
-const card = elements.create('card', {style})
 
-
+const card = elements.create('card', {style, hidePostalCode: true})
 card.addEventListener('change', event => {
   var displayError = document.getElementById('card-errors')
   if (event.error) { displayError.textContent = event.error.messages
   } else { displayError.textContent = ''}
 })
+card.mount('#card-element')
 
 var sameAddressCheckbox = document.getElementById('sameAddressCheckbox')
 sameAddressCheckbox.addEventListener('change', function () {
@@ -34,12 +36,25 @@ sameAddressCheckbox.addEventListener('change', function () {
     document.getElementById('billingAddressFields').classList.remove('is-invisible')
   }
 })
+var returnCustomer = false
+var returnCustomerCheckbox = document.getElementById('returnCustomerCheckbox')
+returnCustomerCheckbox.addEventListener('change', function () {
+  if (document.getElementById('returnCustomerCheckbox').checked) {
+    document.getElementById('cardField').classList.add('is-invisible')
+  } else {
+    document.getElementById('cardField').classList.remove('is-invisible')
+  }
+})
 
 var form = document.getElementById('createCustomer-form')
 
 form.addEventListener('submit', event => {
+
   event.preventDefault();
+
+  returnCustomer = document.getElementById('returnCustomerCheckbox').checked
   document.getElementById('submitCreateCustomer').className = 'is-loading button is-success'
+
   const address = {
     line1: `${event.target.shippingAddress.value}`,
     city: `${event.target.city.value}`,
@@ -47,15 +62,15 @@ form.addEventListener('submit', event => {
     country:  `${event.target.country.value}`,
     postal_code: `${event.target.postalCode.value}`
   }
+
   const billing = document.getElementById('sameAddressCheckbox').checked ? address : {
-    address: {
-      line1: `${event.target.addressBilling.value || event.target.shippingAddress.value}`,
-      city: `${event.target.cityBilling.value || event.target.city.value}`,
-      state: `${event.target.stateBilling.value || event.target.state.value}`,
-      country:  `${event.target.country.value}`,
-      postal_code: `${event.target.postalCodeBilling.value || event.target.postalCode.value}`
-    }
+    line1: `${event.target.addressBilling.value || event.target.shippingAddress.value}`,
+    city: `${event.target.cityBilling.value || event.target.city.value}`,
+    state: `${event.target.stateBilling.value || event.target.state.value}`,
+    country:  `${event.target.country.value}`,
+    postal_code: `${event.target.postalCodeBilling.value || event.target.postalCode.value}`
   }
+
   const customer = {
     email: event.target.email.value,
     description: `Earth sun wholesale customer: ${event.target.company.value}`,
@@ -74,24 +89,65 @@ form.addEventListener('submit', event => {
     }
   }
 
-  axios.post(serverURL, {customer, billing, member: Boolean(event.target.memberYes.checked)},
+  console.log(returnCustomer)
+  console.dir(customer)
+
+  if (!returnCustomer) { // create token and create new customer server side
+    card.update({value: {postalCode: billing.postal_code}})
+    stripe.createToken(card)
+    .then(response => {
+      console.dir(response)
+      customer.source = response.token.id
+      axios.post(`${serverURL}/newcustomer`, {customer, billing, token: response.token},
+        {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        }
+      )
+      .then(response => {
+        console.log('return from post to server')
+        console.dir(response)
+        const newCustomer = Object.assign({}, response.data, { billing })
+        sessionStorage.setItem('customer', JSON.stringify(newCustomer))
+        if (response.data.sources.data.length) {
+          window.location.href = './accountCreated.html'
+        } else {
+          window.location.href = './addPaymentSource.html'
+        }
+      })
+      .catch(error => {
+        document.getElementById('submitCreateCustomer').className = 'button is-success'
+        console.error(error)
+        // update UI to notify user of error
+        window.location.href = './error.html'
+      })
+    })
+    .catch(error => {
+      document.getElementById('submitCreateCustomer').className = 'button is-success'
+      console.log('token creation error')
+      console.error(error)
+    })
+  } else { // is a customer, post to update customer account
+    axios.post(`${serverURL}/newcustomer`, {customer, billing, token: null},
     {
       headers:{
         'Content-type': 'application/json',
         'Accept': 'application/json'
       }
-    }
-  ).then(response => {
-    const newCustomer = Object.assign({}, response.data, { billing })
-    sessionStorage.setItem('customer', JSON.stringify(newCustomer))
-    if (response.data.sources.data.length) {
-      window.location.href = './accountCreated.html'
-    } else {
-      window.location.href = './addPaymentSource.html'
-    }
-  }).catch(error => {
-    console.error(error)
-    window.location.href = './error.html'
-  })
+    }).then(response => {
+      const newCustomer = Object.assign({}, response.data, { billing })
+      sessionStorage.setItem('customer', JSON.stringify(newCustomer))
+      if (response.data.sources.data.length) {
+        window.location.href = './accountCreated.html'
+      } else {
+        window.location.href = './addPaymentSource.html'
+      }
+    }).catch(error => {
+      document.getElementById('submitCreateCustomer').className = 'button is-success'
+      console.error(error)
+      window.location.href = './error.html'
+    })
+  }
+
 
 })
