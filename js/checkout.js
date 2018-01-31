@@ -1,5 +1,6 @@
 // Store API
-serverURL = 'http://localhost:3000/order'
+serverURL = 'https://www.earthsun.ca/order'
+var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
 
 const inventory = {
   'ES-BEL-010': {
@@ -177,7 +178,7 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 /*  === Stripe === */
 /*  ============== */
 
-var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
+// var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var elements = stripe.elements();
 var style = {
   base: {
