@@ -4,13 +4,13 @@ a:hover, span:hover {
 
 .StripeElement {
   background-color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
   height: 40px;
   padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
+  -webkit-transition: box-shadow 150ms ease;
 }
 
 .StripeElement--focus {
@@ -23,4 +23,25 @@ a:hover, span:hover {
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+@media screen and (max-width: 1216px), print {
+  h1.landing, h2.landing {
+    text-align: center;
+  }
+}
+
+.dropdown-menu {
+  min-width: 18rem;
+}
+
+div.hero-foot nav.tabs.is-toggle a {
+  border-color: #363636;
+  border-radius: 0;
+}
+div.hero-foot .tabs.is-toggle li:first-child a {
+  border-radius: 0;
+}
+div.hero-foot .tabs.is-toggle li:last-child a {
+  border-radius: 0;
 }

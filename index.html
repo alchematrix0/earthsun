@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="./css/bulma.css">
     <link rel="stylesheet" href="./css/master.css">
   </head>
-  <body>
-    <section class="hero is-warning is-bold is-fullheight">
+  <body class="hero is-warning is-bold">
+    <section class="hero is-fullheight">
       <div class="hero-head">
         <header class="navbar">
           <div class="container">
@@ -62,19 +62,19 @@
       </div>
       <div class="hero-body">
          <div class="container">
-           <div class="columns level is-centered">
-            <div class="column is-6 is-offset-1 is-12-mobile">
-              <h1 class="title is-1 is-spaced">
+           <div class="columns level is-centered    columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+              <h1 class="title is-2 is-spaced landing">
                 Organic skin care & cosmetics
               </h1>
-              <h2 class="subtitle is-3">
+              <h2 class="subtitle is-3 landing">
                 Made with <span uk-icon="icon: heart"></span> and Xeolite
               </h2>
-              <h2 class="subtitle is-5">
+              <h2 class="subtitle is-5 landing">
                 in beautiful British Columbia
               </h2>
             </div>
-            <div class="column is-12-mobile">
+            <div class="column is-narrow">
               <picture>
                <source srcset="./css/img/group-5pk-sm.png 1x" media="(max-width: 300px)">
                <source srcset="./css/img/group-5pk-hi.png 1x" media="(min-width: 301px)">
@@ -85,40 +85,69 @@
          </div>
        </div>
        <div class="hero-foot">
-         <style media="screen">
-         .dropdown-menu {
-           min-width: 15rem;
-         }
-         .tabs.is-toggle a {
-           border-color: #363636;
-           border-radius: 0;
-         }
-         .tabs.is-toggle li:first-child a {
-           border-radius: 0;
-         }
-         .tabs.is-toggle li:last-child a {
-           border-radius: 0;
-         }
-         .dropdown-menu {
-           min-width: 15rem;
-         }
-         </style>
          <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
            <div class="container">
              <ul>
                <li>
                  <a href="./store.html">Shop</a>
                </li>
-               <li class="is-hidden-mobile">
+               <li>
                  <a href="./wholesale.html">Wholesale</a>
                </li>
-               <li>
-                 <a>About</a>
+               <li class="is-hidden-mobile">
+                 <a href="#about">About</a>
                </li>
              </ul>
            </div>
          </nav>
        </div>
+    </section>
+    <section class="section" id="about">
+      <div class="container">
+        <div class="hero-body is-fullheight is-fullwidth">
+          <div class="columns is-centered">
+            <div class="column is-half">
+              <h4 class="title is-3 has-text-centered is-spaced">Meet Earth Sun</h4>
+            </div>
+          </div>
+          <div class="columns is-centered">
+            <div class="column is-10">
+              <iframe width="100%" height="500px" src="https://www.youtube.com/embed/LMXYFKXqWKY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+          <div class="columns is-centered">
+            <div class="column is-10">
+              <div class="">
+                <strong>EarthSun</strong> was inspired by <strong>nature</strong>, the source of life.
+                By tapping into that source, and by acquiring knowledge on new technologies, our founder Marie believes it is possible to rely on nature’s abundance to deliver simple yet effective health products.
+                <br>
+                At EarthSun, we go beyond the principle of safe cosmetics. Powerful healing agents are abundant in each of our
+                products; each contain <strong>Zeolite</strong>: a <u>powerful detoxifying agent</u> essential to restoring and maintaining <strong>optimal health</strong>. Studies show that
+                <strong>Zeolite</strong> eliminates not only toxins but free radicals, chemicals, heavy metals and radiation from the body and represents a great way to promote vitality, longevity and a vibrant spirit!
+                <br>
+                All of our products are food grade and our motto is:
+                <blockquote class="has-text-centered" style="margin-top: 5rem; margin-bottom: 3rem;">
+                  <b>"If you can't eat it, don't put it on your skin!"</b>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-foot">
+          <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+            <div class="container">
+              <ul>
+                <li>
+                  <a href="./store.html">Shop</a>
+                </li>
+                <li>
+                  <a href="./wholesale.html">Wholesale</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
     </section>
   </body>
   <script type="text/javascript" src="./js/main.js"></script>
