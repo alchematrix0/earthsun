@@ -1,5 +1,6 @@
 // Store API
-serverURL = 'http://localhost:3000/order'
+// serverURL = 'https://www.earthsun.ca/order'
+serverURL = 'localhost:/3000/order'
 
 const inventory = {
   'ES-BEL-010': {

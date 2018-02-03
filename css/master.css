@@ -2,6 +2,10 @@ a:hover, span:hover {
   text-decoration: none;
 }
 
+.hero.is-warning a.link {
+  color: #3273dc;
+}
+
 .StripeElement {
   background-color: white;
   border: 1px solid transparent;
@@ -33,6 +37,31 @@ a:hover, span:hover {
 
 .dropdown-menu {
   min-width: 18rem;
+}
+
+article.media {
+  background-color: whitesmoke;
+  padding: 1rem 1rem 0 1rem;
+}
+
+article.media:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+article.media:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+.media + .media {
+  margin-top: 0;
+}
+
+article .image.is-128x128 {
+  max-height: 112px;
+}
+
+.quantityInput {
+  margin-top: 1rem;
 }
 
 div.hero-foot nav.tabs.is-toggle a {

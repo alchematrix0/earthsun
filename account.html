@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Earth Sun</title>
+    <link rel="shortcut icon" href="./css/img/favicon.svg"/>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/uikit.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript" src="./js/axios.min.js"></script>
+    <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
+    <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="./css/bulma.css">
+    <link rel="stylesheet" href="./css/master.css">
+  </head>
+  <body>
+    <style media="screen">
+      div.field.is-horizontal.is-invisible {
+        height: 0
+      }
+    </style>
+    <section class="hero is-warning is-bold is-fullheight">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a href="./index.html" class="navbar-item">
+                <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
+              </a>
+            </div>
+          </div>
+        </header>
+      </div>
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-11">
+
+              <form id="createCustomer-form" method="post">
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Contact</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input class="input" type="text" name="name" placeholder="Name" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: user;"></span>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input is-success" type="email" name="email" placeholder="Email" value="alex@smith.com" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
+                        </span>
+                        <span class="icon is-small is-right">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: check;"></span>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input class="input" type="text" placeholder="Phone number" name="phone" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: receiver;"></span>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input is-success" placeholder="Company" value="" name="company" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: world;"></span>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Department</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <div class="select is-fullwidth">
+                          <select name="department">
+                            <option>Purchasing</option>
+                            <option>Sales</option>
+                            <option>Marketing</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal" style="line-height: 2;">
+                  <div class="field-label">
+                    <label class="label">Return customer?</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field is-narrow">
+                      <label class="checkbox" style="padding: 2px;">
+                        Yes!
+                        <input name="returnCustomer" style="vertical-align: text-bottom; margin-left: 5px; padding: 10px;" id="returnCustomerCheckbox" type="checkbox">
+                      </label>
+                    </div>
+                    <p style="font-size: 0.9rem;" class="help">If so, we can retrieve your payment info via your email</p>
+                  </div>
+                </div>
+
+                <div id="cardField" class="field is-horizontal">
+                  <div class="field-label">
+                    <label class="label">Add Payment method</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div id="card-element"></div>
+                      <div id="card-errors" role="alert"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Addresses</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input class="input" type="text" placeholder="Street address" name="shippingAddress" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: home;"></span>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Postal Code / Zipcode" name="postalCode" required>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="field is-horizontal">
+                  <div class="field-label"></div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="City" name="city" required>
+                      </p>
+                    </div>
+                    <div class="field is-narrow">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Prov/State" name="state" required>
+                      </p>
+                    </div>
+                    <div class="field is-narrow">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Country" name="country" required>
+                      </p>
+                    </div>
+                    <div class="field is-narrow">
+                      <div class="control" style="padding: 0.25em;">
+                        <label class="checkbox">
+                          <input checked name="sameAddres" id="sameAddressCheckbox" type="checkbox" style="vertical-align: bottom">
+                          Same for billing
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="billingAddressFields" class="field is-horizontal is-invisible">
+                  <div class="field-label"></div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input" id="billingAddress" name="addressBilling" placeholder="Billing">
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: file-edit;"></span>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="City" name="cityBilling">
+                      </p>
+                    </div>
+                    <div class="field is-narrow">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Prov/State" name="stateBilling">
+                      </p>
+                    </div>
+                    <div class="field is-narrow">
+                      <p class="control">
+                        <input class="input" type="text" placeholder="Postal/Zip Code" name="postalCodeBilling">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Details</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <textarea style="min-height: 6rem;" class="textarea" placeholder="Comments, requests or just tell about you!" name="details"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label">
+                    <!-- Left empty for spacing -->
+                  </div>
+                  <div class="field-body">
+                    <div class="field is-grouped">
+                      <div class="control is-expanded">
+                        <button class="button is-primary" id="submitCreateCustomer">
+                          Create Wholesale Account
+                        </button>
+                      </div>
+                      <div class="control">
+                        <a href="./wholesale.html">
+                          <button class="button is-pulled-right is-info">
+                            Back
+                          </button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="hero-foot">
+        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li>
+                <a href="./store.html">Shop</a>
+              </li>
+              <li class="is-active">
+                <a>Wholesale</a>
+              </li>
+              <li>
+                <a href="./index.html#about">About</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </body>
+  <script type="text/javascript" src="./js/account.js"></script>
+  <script type="text/javascript">
+    document.getElementById('returnCustomerCheckbox').checked = false
+  </script>
+  <style>
+    input[type='checkbox']:focus {
+      outline:0
+    }
+  </style>
+</html>

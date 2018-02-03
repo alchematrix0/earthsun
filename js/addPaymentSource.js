@@ -19,16 +19,15 @@ var style = {
     iconColor: '#fa755a'
   }
 };
-
-const card = elements.create('card', {style, hidePostalCode: true})
+let customer = JSON.parse(sessionStorage.customer)
+const card = elements.create('card', {style, hidePostalCode: customer.billing ? Boolean(customer.billing.postal_code) : false })
 card.addEventListener('change', event => {
   var displayError = document.getElementById('card-errors')
   if (event.error) { displayError.textContent = event.error.messages
   } else { displayError.textContent = ''}
 })
 card.mount('#card-element')
-customer = JSON.parse(sessionStorage.customer)
-card.update({value: {postalCode: customer.billing.postal_code}})
+card.update({value: {postalCode: customer.billing ? customer.billing.postal_code : '' }})
 
 const form = document.getElementById('addPaymentForm')
 form.addEventListener('submit', (event) => {
