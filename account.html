@@ -46,7 +46,7 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control is-expanded has-icons-left">
-                        <input class="input" type="text" name="name" placeholder="Name" required>
+                        <input class="input" type="text" autocomplete="name" name="name" placeholder="Name" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: user;"></span>
                         </span>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" type="email" name="email" placeholder="Email" value="alex@smith.com" required>
+                        <input class="input is-success" type="email" autocomplete="email" name="email" placeholder="Email" value="alex@smith.com" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
                         </span>
@@ -72,7 +72,7 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control is-expanded has-icons-left">
-                        <input class="input" type="text" placeholder="Phone number" name="phone" required>
+                        <input class="input" type="text" placeholder="Phone number" autocomplete="tel" name="phone" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: receiver;"></span>
                         </span>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" placeholder="Company" value="" name="company" required>
+                        <input class="input is-success" placeholder="Company" value="" autocomplete="company" name="company" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: world;"></span>
                         </span>
@@ -142,7 +142,7 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control is-expanded has-icons-left">
-                        <input class="input" type="text" placeholder="Street address" name="shippingAddress" required>
+                        <input class="input" type="text" placeholder="Street address" autocomplete="street-address" name="shippingAddress" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: home;"></span>
                         </span>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="field">
                       <p class="control">
-                        <input class="input" type="text" placeholder="Postal Code / Zipcode" name="postalCode" required>
+                        <input class="input" type="text" placeholder="Postal Code / Zipcode" autocomplete="postal-code" name="postalCode" required>
                       </p>
                     </div>
                   </div>
@@ -160,17 +160,17 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control">
-                        <input class="input" type="text" placeholder="City" name="city" required>
+                        <input class="input" type="text" placeholder="City" autocomplete="address-level2" name="city" required>
                       </p>
                     </div>
                     <div class="field is-narrow">
                       <p class="control">
-                        <input class="input" type="text" placeholder="Prov/State" name="state" required>
+                        <input class="input" type="text" placeholder="Prov/State" autocomplete="address-level1" name="state" required>
                       </p>
                     </div>
                     <div class="field is-narrow">
                       <p class="control">
-                        <input class="input" type="text" placeholder="Country" name="country" required>
+                        <input class="input" type="text" placeholder="Country" autocomplete="country" name="country" required>
                       </p>
                     </div>
                     <div class="field is-narrow">
@@ -188,7 +188,7 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input" id="billingAddress" name="addressBilling" placeholder="Billing">
+                        <input class="input" id="billingAddress" name="addressBilling" autocomplete="billing street-address" placeholder="Billing">
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: file-edit;"></span>
                         </span>
@@ -196,17 +196,17 @@
                     </div>
                     <div class="field">
                       <p class="control">
-                        <input class="input" type="text" placeholder="City" name="cityBilling">
+                        <input class="input" type="text" placeholder="City" autocomplete="billing address-level2" name="cityBilling">
                       </p>
                     </div>
                     <div class="field is-narrow">
                       <p class="control">
-                        <input class="input" type="text" placeholder="Prov/State" name="stateBilling">
+                        <input class="input" type="text" placeholder="Prov/State" autocomplete="billing address-level1" name="stateBilling">
                       </p>
                     </div>
                     <div class="field is-narrow">
                       <p class="control">
-                        <input class="input" type="text" placeholder="Postal/Zip Code" name="postalCodeBilling">
+                        <input class="input" type="text" placeholder="Postal/Zip Code" autocomplete="billing country" name="postalCodeBilling">
                       </p>
                     </div>
                   </div>
