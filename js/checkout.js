@@ -1,6 +1,6 @@
 // Store API
-serverURL = 'https://www.earthsun.ca/order'
-var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
+var serverURL = 'https://www.earthsun.ca'
+var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
 
 const inventory = {
   'ES-BEL-010': {
@@ -252,7 +252,7 @@ form.addEventListener('submit', event => {
     } else {
       // Send the token to your server
       console.dir(order)
-      axios.post(serverURL, {customer, order, token: result.token},
+      axios.post(`${serverURL}/order`, {customer, order, token: result.token},
         {
           headers:{
             'Content-type': 'application/json',
