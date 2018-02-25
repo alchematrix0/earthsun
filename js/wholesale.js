@@ -3,153 +3,88 @@
 var serverURL = 'https://www.earthsun.ca'
 var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
 
-var elements = stripe.elements();
+var form = document.getElementById('wholesale-order')
 
-var style = {
-  base: {
-    color: '#32325d',
-    lineHeight: '18px',
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: 'antialiased',
-    fontSize: '16px',
-    '::placeholder': {
-      color: '#aab7c4',
-    }
-  },
-  invalid: {
-    color: '#fa755a',
-    iconColor: '#fa755a'
-  }
-};
-
-const card = elements.create('card', {style, hidePostalCode: true})
-card.addEventListener('change', event => {
-  var displayError = document.getElementById('card-errors')
-  if (event.error) { displayError.textContent = event.error.messages
-  } else { displayError.textContent = ''}
-})
-card.mount('#card-element')
-
-var sameAddressCheckbox = document.getElementById('sameAddressCheckbox')
-sameAddressCheckbox.addEventListener('change', function () {
-  if (document.getElementById('sameAddressCheckbox').checked) {
-    document.getElementById('billingAddressFields').classList.add('is-invisible')
-  } else {
-    document.getElementById('billingAddressFields').classList.remove('is-invisible')
-  }
-})
-var returnCustomer = false
-var returnCustomerCheckbox = document.getElementById('returnCustomerCheckbox')
-returnCustomerCheckbox.addEventListener('change', function () {
-  if (document.getElementById('returnCustomerCheckbox').checked) {
-    document.getElementById('cardField').classList.add('is-invisible')
-  } else {
-    document.getElementById('cardField').classList.remove('is-invisible')
-  }
-})
-
-var form = document.getElementById('createCustomer-form')
+var db = document.getElementsByClassName('delete')
+for (var i = 0; i < db.length; i++) {
+  db[i].addEventListener('click', function (e) {
+    document.getElementById(e.target.dataset.item).remove()
+  })
+}
+let catalog = {
+  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
+  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
+  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
+  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
+  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
+  'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
+  'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
+  'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
+  'BEL-BIO-SUN-3PK': {title: '3 pack Belerai BioShield SunSheer half dozen', quantity: 0, wholesaleAmount: 6, price: 360}
+}
 
 form.addEventListener('submit', event => {
 
   event.preventDefault();
-
-  returnCustomer = document.getElementById('returnCustomerCheckbox').checked
-  document.getElementById('submitCreateCustomer').className = 'is-loading button is-success'
-
-  const address = {
-    line1: `${event.target.shippingAddress.value}`,
-    city: `${event.target.city.value}`,
-    state: `${event.target.state.value}`,
-    country:  `${event.target.country.value}`,
-    postal_code: `${event.target.postalCode.value}`
+  for (var item in catalog) {
+    catalog[item].quantity = form.elements[item] ? Number(form.elements[item].value) : 0
   }
-
-  const billing = document.getElementById('sameAddressCheckbox').checked ? address : {
-    line1: `${event.target.addressBilling.value || event.target.shippingAddress.value}`,
-    city: `${event.target.cityBilling.value || event.target.city.value}`,
-    state: `${event.target.stateBilling.value || event.target.state.value}`,
-    country:  `${event.target.country.value}`,
-    postal_code: `${event.target.postalCodeBilling.value || event.target.postalCode.value}`
-  }
-
   const customer = {
     email: event.target.email.value,
-    description: `Earth sun wholesale customer: ${event.target.company.value}`,
-    shipping: {
-      name: `${event.target.company.value}`,
-      phone: `${event.target.phone.value}`,
-      address
-    },
-    metadata: {
-      contactPhone: `${event.target.phone.value}`,
-      contactName: `${event.target.name.value}`,
-      role: event.target.department.value,
-      details: event.target.details.value,
-      billingLine1: billing.line1,
-      billingPostal: billing.postal_code
+    id: event.target.account.value,
+    details: form.elements.details.value
+  }
+  console.dir(customer)
+  let order = []
+  for (sku in catalog) {
+    if (catalog[sku].quantity > 0) {
+      let item = catalog[sku]
+      order.push({
+        amount: item.price * 100,
+        currency: 'cad',
+        parent: sku,
+        quantity: item.quantity * item.wholesaleAmount,
+        type: 'sku'
+      })
     }
   }
-
-  console.log(returnCustomer)
-  console.dir(customer)
-
-  if (!returnCustomer) { // create token and create new customer server side
-    card.update({value: {postalCode: billing.postal_code}})
-    stripe.createToken(card)
-    .then(response => {
-      console.dir(response)
-      customer.source = response.token.id
-      axios.post(`${serverURL}/newcustomer`, {customer, billing, token: response.token},
+  console.dir(order)
+  document.getElementById('submitCreateWholesaleOrder').className = 'button is-loading is-primary'
+  axios.post(`${serverURL}/retrieveCustomer`, {customer},
+    {
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
+    }
+  )
+  .then(response => {
+    console.log('return from post to server')
+    console.dir(response)
+    sessionStorage.setItem('wholesaleAccount', JSON.stringify(response.data.customer))
+    if (response.data.customer.sources.data.length) {
+      console.log('got a source')
+      axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
         {
           'Content-type': 'application/json',
           'Accept': 'application/json'
         }
       )
       .then(response => {
-        console.log('return from post to server')
-        console.dir(response)
-        const newCustomer = Object.assign({}, response.data, { billing })
-        sessionStorage.setItem('customer', JSON.stringify(newCustomer))
-        if (response.data.sources.data.length) {
-          window.location.href = './accountCreated.html'
-        } else {
-          window.location.href = './addPaymentSource.html'
-        }
+        sessionStorage.setItem('cart', JSON.stringify(catalog))
+        window.location.href = './thankyou.html'
       })
       .catch(error => {
-        document.getElementById('submitCreateCustomer').className = 'button is-success'
-        console.error(error)
-        // update UI to notify user of error
         window.location.href = './error.html'
       })
-    })
-    .catch(error => {
-      document.getElementById('submitCreateCustomer').className = 'button is-success'
-      console.log('token creation error')
-      console.error(error)
-    })
-  } else { // is a customer, post to update customer account
-    axios.post(`${serverURL}/newcustomer`, {customer, billing, token: null},
-    {
-      headers:{
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      const newCustomer = Object.assign({}, response.data, { billing })
-      sessionStorage.setItem('customer', JSON.stringify(newCustomer))
-      if (response.data.sources.data.length) {
-        window.location.href = './accountCreated.html'
-      } else {
-        window.location.href = './addPaymentSource.html'
-      }
-    }).catch(error => {
-      document.getElementById('submitCreateCustomer').className = 'button is-success'
-      console.error(error)
-      window.location.href = './error.html'
-    })
-  }
-
-
+    } else {
+      alert('No payment method found! Please complete account setup')
+      window.location.href = '.account/.html'
+    }
+  })
+  .catch(error => {
+    document.getElementById('submitCreateWholesaleOrder').className = 'button is-danger'
+    document.getElementById('submitCreateWholesaleOrder').innerHTML = 'failed'
+    document.getElementById('errorBox').innerHTML = `Error message: ${error.message}`
+    console.error(error)
+    // update UI to notify user of error
+  })
 })
