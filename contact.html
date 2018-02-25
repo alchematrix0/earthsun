@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Earth Sun</title>
+    <link rel="shortcut icon" href="./css/img/favicon.svg"/>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/uikit.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
+    <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="./css/bulma.css">
+    <link rel="stylesheet" href="./css/master.css">
+  </head>
+  <body>
+    <section class="hero is-warning is-bold is-fullheight">
+      <div class="hero-head">
+        <header class="navbar">
+          <div class="container">
+            <div class="navbar-brand">
+              <a href="./index.html" class="navbar-item">
+                <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
+              </a>
+            </div>
+          </div>
+        </header>
+      </div>
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-8 is-offset-2">
+              <h1 class="title">Contact us</h1>
+              <h4>Use the form below to send us a message or email us anytime via <b>info@earthsun.ca</b></h4>
+              <br>
+              <form action="https://formspree.io/info@earthsun.ca" method="POST">
+                <div class="field is-horizontal">
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input class="input" type="text" name="name" placeholder="Name" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: user;"></span>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input is-success" type="email" name="_replyto" placeholder="Email" value="alex@smith.com" required>
+                        <span class="icon is-small is-left">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
+                        </span>
+                        <span class="icon is-small is-right">
+                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: check;"></span>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="field is-horizontal">
+                  <div class="field-body">
+                    <div class="field is-expanded">
+                      <div class="select is-fullwidth">
+                        <select name="_subject" style="padding-top: 4px;">
+                          <option>Topic</option>
+                          <option>I want to place an order</option>
+                          <option>I need help with creating a wholesale account</option>
+                          <option>I have a question about a product</option>
+                          <option>I have a question about ordering/buying in person</option>
+                          <option>Something Else</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="control is-horizontal">
+                  <div class="control-label">
+                    <label class="label">Message</label>
+                  </div>
+                  <div class="control">
+                    <textarea name="message" class="textarea" placeholder="Details"></textarea>
+                  </div>
+                </div>
+                <input type="hidden" name="_next" value="/thanks.html" />
+                <input type="hidden" name="_subject" value="Yo sup!" />
+                <div class="columns">
+                  <div class="column is-offset-9 is-one-quarter">
+                    <p class="control is-horizontal">
+                      <button type="submit" value="Send" style="margin-top: 0.5rem;" class="button is-info is-fullwidth">
+                        <span class="icon">
+                          <span class="uk-icon" uk-icon="icon: pencil;"></span>
+                        </span>
+                      </button>
+                    </p>
+                  </div>
+                </div>
+                <input type="hidden" name="_next" value="./thankyouMessage.html" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <style media="screen">
+          .tabs.is-toggle a {
+            border-color: #363636;
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:first-child a {
+            border-radius: 0;
+          }
+          .tabs.is-toggle li:last-child a {
+            border-radius: 0;
+          }
+          .dropdown-menu {
+            min-width: 15rem;
+          }
+        </style>
+        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+          <div class="container">
+            <ul>
+              <li>
+                <a href="./store.html">Shop</a>
+              </li>
+              <li class="is-hidden-mobile">
+                <a href="./wholesale.html">Wholesale</a>
+              </li>
+              <li>
+                <a href="./contact.html">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </body>
+</html>
