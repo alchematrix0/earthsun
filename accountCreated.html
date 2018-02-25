@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/uikit.min.css">
     <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript" src="./js/clipboard.min.js"></script>
     <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
     <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
     <link rel="stylesheet" href="./css/bulma.css">
@@ -32,37 +33,26 @@
             <div class="container">
               <div class="columns">
                 <div class="column is-8 is-offset-2">
-                  <h1 class="title">
-                    Order placed!
+                  <h1 class="title is-1">
+                    Account created!
                   </h1>
-                  <p>Thank you for shopping at Earth Sun</p>
-                  <p>We have e-mailed you a receipt and your items will be shipping ASAP!</p>
-                  <br>
-                  <div class="box notification has-text-centered" id="checkoutParent">
-                    <style media="screen">
-                      .media + .media {
-                        margin-top: 0;
-                      }
-                    </style>
-                    <article class="media" id="checkoutTemplate">
-                      <figure class="media-left">
-                        <p class="image is-96x96">
-                          <img src="https://bulma.io/images/placeholders/64x64.png">
-                        </p>
-                      </figure>
-                      <div class="media-content">
-                        <div class="content">
-                          <p>
-                            <strong id="itemName">There are no items in your cart!</strong>
-                            <br>
-                            <span></span>
-                            <br>
-                            <span></span>
-                          </p>
-                        </div>
-                      </div>
-                    </article>
-
+                  <h4 class="title is-4">Thank you for creating a wholesale account at Earth Sun</h4>
+                  <h6 class="title is-6">Your account number is: <b id="accountNumber"></b>
+                    <span class="uk-icon clip" id="copyButton" uk-icon="icon: copy;"></span>
+                    <span id="copied" style="display: inline-block;" class="help is-hidden is-info">Account number copied!</span>
+                  </h6>
+                  <div id="failedInfo" class="is-hidden">
+                    Hm. If you just created an account, please <a style="color: #3273dc;" href="./contact">contact support</a>
+                  </div>
+                  <div class="content" id="info">
+                    <h6 class="title is-6">Please store this number for use on the <a style="color: #3273dc;" href="./wholesale.html">wholesale order page</a></h6>
+                    <!-- <p>nb: We have stored this account number in your web browser.</p>
+                    <p>
+                      If this is not your device, please <a style="color: #3273dc;" href="#" id="eraseAccountNumber">click here</a> to erase it.
+                      <span id="erased" style="display: inline-block;" class="help is-hidden is-info">Account number erased!</span>
+                    </p> -->
+                    <p>Happy shopping <span uk-icon="icon: heart"></span></p>
+                    <p>Team earthsun</p>
                   </div>
                 </div>
               </div>
@@ -91,14 +81,13 @@
         <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
           <div class="container">
             <ul>
-              <li>
+              <li class="is-hidden-mobile">
                 <a href="./store.html">Shop</a>
               </li>
-              <li class="is-hidden-mobile">
+              <li>
                 <a href="./wholesale.html">Wholesale</a>
               </li>
               <li>
-                <!-- <a href="./index.html#about">About</a> -->
                 <a href="./contact.html">Contact</a>
               </li>
             </ul>
@@ -107,33 +96,34 @@
       </div>
     </section>
     <script type="text/javascript">
-    const cart = JSON.parse(sessionStorage.cart)
-    let total = 0
-    const container = document.getElementById('checkoutParent')
-    const template = document.getElementById('checkoutTemplate')
-    for (sku in cart) {
-      console.log(sku)
-      total ++
-      if (cart[sku].quantity) {
-        let item = template.cloneNode(true)
-        item.id = `${sku}`
-        container.appendChild(item)
-        item.childNodes.forEach(node => {
-          switch (node.className) {
-            case 'media-left':
-              node.lastElementChild.firstElementChild.setAttribute('src', `./css/img/thumbs/${sku}.png`)
-            break
-            case 'media-content':
-              node.childNodes[1].firstElementChild.childNodes[1].innerHTML = `${cart[sku].quantity}x ${cart[sku].title}`
-              node.childNodes[1].firstElementChild.childNodes[5].innerHTML = `$${cart[sku].price * cart[sku].quantity}`
-            break
-          }
-        })
-      }
-      if (total === 1) {
-        container.removeChild(template)
-      }
+    function triggerNoneFound () {
+      document.getElementById('accountNumber').innerHTML = 'no account # found...'
+      document.getElementById('failedInfo').className = ''
+      document.getElementById('info').className = 'is-hidden'
+      document.getElementById('copyButton').className = 'is-hidden'
     }
+    try {
+      const wholesaleAccount = JSON.parse(sessionStorage.wholesaleAccount)
+      let acctNumber = document.getElementById('accountNumber')
+      let copyButton = document.getElementById('copyButton')
+      acctNumber.innerHTML = wholesaleAccount.id
+      copyButton.setAttribute('data-clipboard-text', wholesaleAccount.id)
+      let clipboard = new Clipboard('.clip')
+      clipboard.on('success', function(e) {
+        document.getElementById('copied').className = 'is-info help'
+        setTimeout(function () {
+          document.getElementById('copied').className = 'is-hidden is-info help'
+        }, 3000)
+      });
+      // document.getElementById('eraseAccountNumber').addEventListener('click', function () {
+      //   sessionStorage.wholesaleAccount = JSON.stringify({})
+      //   setTimeout(function () {
+      //     document.getElementById('erased').className = 'is-hidden is-info help'
+      //   }, 3000)
+      // })
+      } catch {
+        triggerNoneFound()
+      }
     </script>
   </body>
 </html>
