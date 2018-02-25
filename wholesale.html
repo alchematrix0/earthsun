@@ -248,7 +248,7 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" type="email" name="email" placeholder="Email" value="alex@smith.com" required>
+                        <input class="input is-success" type="email" id="accountEmailInput" name="email" placeholder="Email" value="alex@smith.com" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
                         </span>
@@ -259,7 +259,7 @@
                     </div>
                     <div class="field">
                       <p class="control is-expanded has-icons-left">
-                        <input class="input" type="text" name="account" placeholder="Account #" required>
+                        <input class="input" type="text" id="accountNumberInput" name="account" placeholder="Account #" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: user;"></span>
                         </span>
@@ -268,6 +268,21 @@
                     <p style="font-size: 0.9rem;" class="help">Don't have an account? Please <a class="link" href="./account.html">sign up here</a></p>
                   </div>
                 </div>
+
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label"></label>
+                  </div>
+                  <div class="field-body">
+                    <div class="control" style="padding: 0.25em;">
+                      <label class="checkbox">
+                        <input checked name="saveAccountLocally" id="saveAccountLocally" type="checkbox" style="vertical-align: bottom">
+                        Remember me
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="field is-horizontal">
                   <div class="field-label is-normal">
                     <label class="label">Additional details</label>
@@ -285,7 +300,7 @@
                     <!-- Left empty for spacing -->
                   </div>
                   <div class="field-body">
-                    <div class="field">
+                    <div class="field is-narrow">
                       <div class="control">
                         <button class="button is-primary" id="submitCreateWholesaleOrder">
                           Create Wholesale Order

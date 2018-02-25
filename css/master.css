@@ -6,6 +6,10 @@ a:hover, span:hover {
   color: #3273dc;
 }
 
+#copyButton:hover {
+  cursor: pointer;
+}
+
 .StripeElement {
   background-color: white;
   border: 1px solid transparent;

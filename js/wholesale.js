@@ -20,6 +20,16 @@ let catalog = {
   'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
   'BEL-BIO-SUN-3PK': {title: '3 pack Belerai BioShield SunSheer half dozen', quantity: 0, wholesaleAmount: 6, price: 360}
 }
+if (sessionStorage.wholesaleAccount) {
+  let account = JSON.parse(sessionStorage.wholesaleAccount)
+  document.getElementById('accountNumberInput').value = account.id
+  document.getElementById('accountEmailInput').value = account.email
+}
+
+if (localStorage.earthsunAccountId) {
+  document.getElementById('accountNumberInput').value = localStorage.earthsunAccountId
+  document.getElementById('accountEmailInput').value = localStorage.earthsunAccountEmail
+}
 
 form.addEventListener('submit', event => {
 
@@ -31,6 +41,10 @@ form.addEventListener('submit', event => {
     email: event.target.email.value,
     id: event.target.account.value,
     details: form.elements.details.value
+  }
+  if (event.target.saveAccountLocally.checked) {
+    localStorage.setItem('earthsunAccountId', customer.id)
+    localStorage.setItem('earthsunAccountEmail', customer.email)
   }
   console.dir(customer)
   let order = []
