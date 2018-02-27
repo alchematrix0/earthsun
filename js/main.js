@@ -5,7 +5,7 @@ let stripePrivateTestKey = 'sk_test_qK9z9eiKlAyaskS3K1SnxvRJ'
 const inventory = {
   'ES-BEL-010': {
     thumb: '',
-    price: 20,
+    price: 59.99,
     shipping: 4,
     title: 'Beleai',
     description: 'b stuff',
@@ -13,7 +13,7 @@ const inventory = {
   },
   'ES-BIO-010': {
     thumb: '',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Bio Shield',
     description: 'shield stuff',
@@ -21,7 +21,7 @@ const inventory = {
   },
   'ES-SUN-008': {
     thumb: '',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Sun Sheer',
     description: 'sheerly sun',
@@ -29,7 +29,7 @@ const inventory = {
   },
   'ES-BUM-010': {
     thumb: '',
-    price: 20,
+    price: 34.99,
     shipping: 6,
     title: 'Coco Bum',
     description: 'Coconut',
@@ -37,7 +37,7 @@ const inventory = {
   },
   'ES-CHI-010': {
     thumb: '',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Sun Child',
     description: 'Sun child',
@@ -88,7 +88,7 @@ removeItemFromCart = (item) => {
   cart[sku].quantity = 0
   cart['subtotal'].subtotal -= inventory[sku].price
   cart['subtotal'].shipping -= inventory[sku].shipping
-  cart['subtotal'].grandTotal -= (inventory[sku].price + inventory[sku].shipping)
+  cart['subtotal'].grandTotal -= ((inventory[sku].price * 1.12) + inventory[sku].shipping)
   sessionStorage.setItem('cart', JSON.stringify(cart))
 
   let dropdownDiv = document.getElementById(`cart-${sku}`)
@@ -101,7 +101,7 @@ removeItemFromCart = (item) => {
   dropdownDiv.remove()
   total--
   document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
-  document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+  document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal.toFixed(2)}`
   document.getElementById('cartBadge').innerHTML = total;
   if (total === 0) {
     let defaultDropdownItem = document.getElementById('cart-default')
@@ -138,7 +138,7 @@ loadExistingCart = (cart) => {
       total++
 
       document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
-      document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+      document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal.toFixed(2)}`
       document.getElementById('cartBadge').innerHTML = total;
 
       let newDropdownDiv = document.createElement('div'); // add entry to list
@@ -175,12 +175,11 @@ let orderButtons = document.querySelectorAll('.orderButton')
 orderButtons.forEach(button => {
 
   button.onclick = (item) => {
-
     let sku = item.target.dataset.sku; // grab sku from data-sku
     cart[sku].quantity++              // inc quantity in cart object
     cart['subtotal'].subtotal += inventory[sku].price
     cart['subtotal'].shipping += inventory[sku].shipping
-    cart['subtotal'].grandTotal += (inventory[sku].price + inventory[sku].shipping)
+    cart['subtotal'].grandTotal += ((inventory[sku].price * 1.12) + inventory[sku].shipping)
 
     sessionStorage.setItem(sku, cart[sku].quantity) // update sessionStorage with quantity
     sessionStorage.setItem('cart', JSON.stringify(cart)) // update sessionStore global cart obj with quantity
@@ -191,7 +190,7 @@ orderButtons.forEach(button => {
     hr.id = `hr-${sku}`
 
     document.getElementById('cart-shipping').innerHTML = `${cart.subtotal.shipping}`
-    document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal}`
+    document.getElementById('cart-total').innerHTML = `${cart.subtotal.grandTotal.toFixed(2)}`
 
     if (!total) { // shopping cart list is at 0 currently
       let defaultDropdownItem = document.getElementById('cart-default') // target the placeholder <li> in cart list

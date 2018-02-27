@@ -1,13 +1,17 @@
 // Store API
-var serverURL = 'https://www.earthsun.ca'
-var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
-// serverURL = 'https://www.earthsun.ca/order'
-// var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
+// var serverURL = 'https://www.earthsun.ca'
+// var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
+serverURL = 'http://localhost:3000'
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
+
+// Retail: $34.99/jar for CocoBum, $39.99/jar for SunSheer, SunChild, and BioShield, and $59.99/jar for Beleia.
+// Wholesale (minimum order is 1 case of 12 jars): $280/case for CocoBum, $320/case for SunSheer, SunChild, and BioShield, and $480/case for Beleia.
+
 
 const inventory = {
   'ES-BEL-010': {
     thumb: 'thumb.png',
-    price: 20,
+    price: 59.99,
     shipping: 4,
     title: 'Beleai',
     description: 'b stuff',
@@ -15,7 +19,7 @@ const inventory = {
   },
   'ES-BIO-010': {
     thumb: 'thumb.png',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Bio Shield',
     description: 'shield stuff',
@@ -23,7 +27,7 @@ const inventory = {
   },
   'ES-SUN-008': {
     thumb: 'thumb.png',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Sun Sheer',
     description: 'sheerly sun',
@@ -31,7 +35,7 @@ const inventory = {
   },
   'ES-BUM-010': {
     thumb: 'thumb.png',
-    price: 20,
+    price: 34.99,
     shipping: 6,
     title: 'Coco Bum',
     description: 'Coconut',
@@ -39,7 +43,7 @@ const inventory = {
   },
   'ES-CHI-010': {
     thumb: 'thumb.png',
-    price: 20,
+    price: 39.99,
     shipping: 4,
     title: 'Sun Child',
     description: 'Sun child',
@@ -90,13 +94,16 @@ removeItemFromCart = (item) => {
   cart[sku].quantity = 0
   cart['subtotal'].subtotal -= inventory[sku].price
   cart['subtotal'].shipping -= inventory[sku].shipping
-  cart['subtotal'].grandTotal -= (inventory[sku].price + inventory[sku].shipping)
+  cart['subtotal'].grandTotal -= ((inventory[sku].price * 1.12) + inventory[sku].shipping)
   sessionStorage.setItem('cart', JSON.stringify(cart))
 
   total--
-  document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal || cart.subtotal.tally}</span>`
+  let taxes = Number((cart.subtotal.subtotal * 0.12).toFixed(2))
+  document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal.toFixed(2)}</span>`
   document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping}</span>`
-  document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${cart.subtotal.grandTotal}</span>`
+  document.getElementById('taxes').innerHTML = `GST/PST: <span class="is-pulled-right">${taxes}</span>`
+  document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${(cart.subtotal.grandTotal).toFixed(2)}</span>`
+
   if (!total) {
     let noItems = document.createTextNode('There are no items in your cart!')
     document.getElementById('checkoutParent').appendChild(noItems)
@@ -152,9 +159,6 @@ loadCartForCheckout = (cart = invetory) => {
               let target = document.getElementById(`${e.target.dataset.sku}`)
               fadeOut(target)
               removeItemFromCart(e)
-              // cart[`${e.target.dataset.sku}`].quantity = 0
-              // sessionStorage.setItem('cart', JSON.stringify(cart))
-              // sessionStorage.setItem(`${e.target.dataset.sku}`, 0)
             })
             break
         }
@@ -162,10 +166,12 @@ loadCartForCheckout = (cart = invetory) => {
     }
   }
   if (total) {
+    let taxes = Number((cart.subtotal.subtotal * 0.12).toFixed(2))
     container.removeChild(template)
-    document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal || cart.subtotal.tally}</span>`
+    document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal.toFixed(2)}</span>`
     document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping}</span>`
-    document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${cart.subtotal.grandTotal}</span>`
+    document.getElementById('taxes').innerHTML = `GST/PST: <span class="is-pulled-right">${taxes}</span>`
+    document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${(cart.subtotal.grandTotal).toFixed(2)}</span>`
   }
 }
 if (!sessionStorage.cart) { // no cart in session, set to blank
