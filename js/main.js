@@ -1,7 +1,5 @@
 // Store API
 
-let stripePubTestKey = 'pk_test_yTXzIGll1qz4bb0a19zOku70'
-let stripePrivateTestKey = 'sk_test_qK9z9eiKlAyaskS3K1SnxvRJ'
 const inventory = {
   'ES-BEL-010': {
     thumb: '',
