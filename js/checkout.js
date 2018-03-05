@@ -4,17 +4,13 @@
 serverURL = 'http://localhost:3000'
 var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 
-// Retail: $34.99/jar for CocoBum, $39.99/jar for SunSheer, SunChild, and BioShield, and $59.99/jar for Beleia.
-// Wholesale (minimum order is 1 case of 12 jars): $280/case for CocoBum, $320/case for SunSheer, SunChild, and BioShield, and $480/case for Beleia.
-
-
 const inventory = {
   'ES-BEL-010': {
     thumb: 'thumb.png',
     price: 59.99,
     shipping: 4,
     title: 'Beleai',
-    description: 'b stuff',
+    description: 'Beleai skin cleanser',
     quantity: 0
   },
   'ES-BIO-010': {
@@ -22,7 +18,7 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Bio Shield',
-    description: 'shield stuff',
+    description: 'Bio Shield: sun protection',
     quantity: 0
   },
   'ES-SUN-008': {
@@ -30,15 +26,15 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Sun Sheer',
-    description: 'sheerly sun',
+    description: 'Sun sheer: sun protection',
     quantity: 0
   },
   'ES-BUM-010': {
     thumb: 'thumb.png',
     price: 34.99,
-    shipping: 6,
+    shipping: 4,
     title: 'Coco Bum',
-    description: 'Coconut',
+    description: 'Diaper ointment',
     quantity: 0
   },
   'ES-CHI-010': {
@@ -46,44 +42,51 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Sun Child',
-    description: 'Sun child',
+    description: 'Sun child: sun protection for children',
     quantity: 0
   },
-  'ES-5PK': {
-    thumb: 'thumb.png',
-    price: 75,
-    shipping: 8,
-    title: '5 Pack',
-    description: 'Earth sun pack of 5: all of our signature products in one',
-    quantity: 0
-  },
-  'BEL-BUM-2PK': {
-    thumb: 'thumb.png',
-    price: 35,
-    shipping: 6,
-    title: 'Beleai + CocoBum 2 pack',
-    description: '',
-    quantity: 0
-  },
-  'SUN-CHI-2PK': {
-    thumb: 'thumb.png',
-    price: 35,
-    shipping: 6,
-    title: 'Sun Sheer + Sun Child',
-    description: 'Sun sheer and Sun Child two pack',
-    quantity: 0
-  },
-  'BEL-BIO-SUN-3PK': {
-    thumb: 'thumb.png',
-    price: 20,
-    shipping: 7,
-    title: 'Beleai, Sun Sheer and Bio Shield 3 pack',
-    description: '3 pack of our most popular products',
-    quantity: 0
+  // 'ES-5PK': {
+  //   thumb: 'thumb.png',
+  //   price: 75,
+  //   shipping: 8,
+  //   title: '5 Pack',
+  //   description: 'Earth sun pack of 5: all of our signature products in one',
+  //   quantity: 0
+  // },
+  // 'BEL-BUM-2PK': {
+  //   thumb: 'thumb.png',
+  //   price: 35,
+  //   shipping: 6,
+  //   title: 'Beleai + CocoBum 2 pack',
+  //   description: '',
+  //   quantity: 0
+  // },
+  // 'SUN-CHI-2PK': {
+  //   thumb: 'thumb.png',
+  //   price: 35,
+  //   shipping: 6,
+  //   title: 'Sun Sheer + Sun Child',
+  //   description: 'Sun sheer and Sun Child two pack',
+  //   quantity: 0
+  // },
+  // 'BEL-BIO-SUN-3PK': {
+  //   thumb: 'thumb.png',
+  //   price: 20,
+  //   shipping: 7,
+  //   title: 'Beleai, Sun Sheer and Bio Shield 3 pack',
+  //   description: '3 pack of our most popular products',
+  //   quantity: 0
+  // },
+  coupon: {
+    applied: false,
+    name: '',
+    rate: 0,
+    value: 0
   },
   subtotal: {
     subtotal: 0,
     shipping: 0,
+    gstPst: 0,
     grandTotal: 0
   }
 }
@@ -91,10 +94,10 @@ const inventory = {
 removeItemFromCart = (item) => {
 
   let sku = item.target.dataset.sku
+  cart = JSON.parse(sessionStorage.cart)
   cart[sku].quantity = 0
-  cart['subtotal'].subtotal -= inventory[sku].price
-  cart['subtotal'].shipping -= inventory[sku].shipping
-  cart['subtotal'].grandTotal -= ((inventory[sku].price * 1.12) + inventory[sku].shipping)
+  cart.subtotal = calculateSubtotals(cart, cart.coupon.applied ? cart.coupon : false)
+
   sessionStorage.setItem('cart', JSON.stringify(cart))
 
   total--
@@ -131,10 +134,36 @@ let fadeOut = (el) => {
   })();
 }
 
+calculateSubtotals = (cart, coupon) => {
+  let subtotal = {
+    subtotal: 0,
+    gstPst: 0,
+    shipping: 0,
+    grandTotal: 0
+  }
+  for (sku in cart) {
+    if (cart[sku].quantity) {
+      let base = cart[sku].quantity * cart[sku].price
+      if (coupon) {
+        base -= base * coupon.rate
+      }
+      subtotal.subtotal += base
+      subtotal.gstPst += base * 0.12
+      subtotal.shipping = subtotal.subtotal > 50 ? 0 : 25
+      grandTotal = subtotal.subtotal + subtotal.gstPst + subtotal.shipping
+    }
+  }
+  subtotal.grandTotal = subtotal.subtotal + subtotal.gstPst + subtotal.shipping
+  return subtotal
+}
+
+
 let total = 0
 let subtotal = 0
 
-loadCartForCheckout = (cart = invetory) => {
+// Load Cart For Checkout (cart initialized to invetory object)
+
+loadCartForCheckout = (cart = invetory) => { // view layer items list, then, if total, update subtotal/totals view
   const container = document.getElementById('checkoutParent')
   const template = document.getElementById('checkoutTemplate')
   for (sku in cart) {
@@ -166,20 +195,32 @@ loadCartForCheckout = (cart = invetory) => {
     }
   }
   if (total) {
-    let taxes = Number((cart.subtotal.subtotal * 0.12).toFixed(2))
     container.removeChild(template)
+    document.getElementById('coupon-code').classList.toggle('is-hidden')
     document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal.toFixed(2)}</span>`
-    document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping}</span>`
-    document.getElementById('taxes').innerHTML = `GST/PST: <span class="is-pulled-right">${taxes}</span>`
+    document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping.toFixed(2)}</span>`
+    document.getElementById('taxes').innerHTML = `GST/PST: <span class="is-pulled-right">${cart.subtotal.gstPst.toFixed(2)}</span>`
     document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${(cart.subtotal.grandTotal).toFixed(2)}</span>`
+    document.getElementById('coupon-form').addEventListener('submit', function(e) {
+      e.preventDefault()
+      if (sha256(e.target.code.value.toLowerCase()) === 'abba4522e51561ca9cf09034f088ba219fca11e413e16d4c07562195b1863ff9') {
+        cart = JSON.parse(sessionStorage.cart)
+        cart.coupon.applied = true
+        cart.coupon.name = e.target.code.value.toLowerCase()
+        cart.coupon.rate = 0.1
+        cart.coupon.value = cart.subtotal.subtotal * 0.1
+        cart.subtotal = calculateSubtotals(cart, cart.coupon)
+        sessionStorage.setItem('cart', JSON.stringify(cart))
+        document.getElementById('coupon-active').classList = 'help'
+        document.getElementById('coupon-failed').classList = 'help is-hidden'
+        document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal.toFixed(2)}</span>`
+        document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${(cart.subtotal.grandTotal).toFixed(2)}</span>`
+      } else {
+        document.getElementById('coupon-active').classList = 'help is-hidden'
+        document.getElementById('coupon-failed').classList = ('help')
+      }
+    })
   }
-}
-if (!sessionStorage.cart) { // no cart in session, set to blank
-  sessionStorage.setItem('cart', JSON.stringify(inventory))
-  sessionStorage.setItem('ts', Date.now())
-} else { // cart in session, parse and load cart
-  cart = JSON.parse(sessionStorage.cart)
-  loadCartForCheckout(cart)
 }
 
 /*  ============== */
@@ -209,7 +250,7 @@ card.mount('#card-element')
 card.addEventListener('change', event => {
   var displayError = document.getElementById('card-errors')
   if (event.error) { displayError.textContent = event.error.messages
-  } else { displayError.textContent = ''}
+  }
 })
 
 var myPostalCodeField = document.querySelector('input[name="postal"]')
@@ -277,3 +318,13 @@ form.addEventListener('submit', event => {
     }
   })
 })
+
+// run this module
+// check session, call load cart if applicable otherwise init empty
+if (!sessionStorage.cart) { // no cart in session, set to blank
+  sessionStorage.setItem('cart', JSON.stringify(inventory))
+  sessionStorage.setItem('ts', Date.now())
+} else { // cart in session, parse and load cart
+  cart = JSON.parse(sessionStorage.cart)
+  loadCartForCheckout(cart)
+}

@@ -1,5 +1,7 @@
-var serverURL = 'https://www.earthsun.ca'
-var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
+// var serverURL = 'https://www.earthsun.ca'
+// var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
+serverURL = 'http://localhost:3000'
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 
 var form = document.getElementById('wholesale-order')
 
@@ -10,15 +12,15 @@ for (var i = 0; i < db.length; i++) {
   })
 }
 let catalog = {
-  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
-  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
-  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
-  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
-  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, price: 240},
-  'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
-  'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
-  'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
-  'BEL-BIO-SUN-3PK': {title: '3 pack Belerai BioShield SunSheer half dozen', quantity: 0, wholesaleAmount: 6, price: 360}
+  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, price: 480},
+  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 320},
+  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 320},
+  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, price: 280},
+  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, price: 320}
+  // 'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
+  // 'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
+  // 'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
+  // 'BEL-BIO-SUN-3PK': {title: '3 pack Belerai BioShield SunSheer half dozen', quantity: 0, wholesaleAmount: 6, price: 360}
 }
 if (sessionStorage.wholesaleAccount) {
   let account = JSON.parse(sessionStorage.wholesaleAccount)
