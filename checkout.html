@@ -33,11 +33,13 @@
           <div class="columns">
             <div class="column is-6">
               <div class="box notification has-text-centered" id="checkoutParent">
+
                 <style media="screen">
                   .media + .media {
                     margin-top: 0;
                   }
                 </style>
+
                 <article class="media" id="checkoutTemplate">
                   <figure class="media-left">
                     <p class="image is-96x96">
@@ -59,6 +61,31 @@
                 </article>
 
               </div>
+
+              <article class="is-hidden message" id="coupon-code">
+                <form id="coupon-form">
+                  <div class="message-body">
+                    <div class="field is-horizontal has-addons">
+                      <div class="field-label is-normal">
+                        <label class="label">Coupon code</label>
+                      </div>
+                      <div class="field-body">
+                          <div class="control is-expanded">
+                            <input name="code" class="input" type="text" placeholder="Apply a coupon code">
+                            <p class="help is-hidden" id="coupon-failed">Coupon code not found :/</p>
+                            <p class="help is-hidden" id="coupon-active">Coupon code <b>Zeolite -10%</b> applied!</p>
+                          </div>
+                          <div class="control">
+                            <button class="button is-info">
+                              Apply
+                            </button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </article>
+
             </div>
             <div class="column is-6">
               <div class="box notification is-link" id="checkoutTotal">
@@ -191,5 +218,6 @@
       </div>
     </section>
   </body>
+  <script type="text/javascript" src="./js/sha256.min.js"></script>
   <script type="text/javascript" src="./js/checkout.js"></script>
 </html>
