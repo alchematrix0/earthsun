@@ -112,7 +112,6 @@
     const container = document.getElementById('checkoutParent')
     const template = document.getElementById('checkoutTemplate')
     for (sku in cart) {
-      console.log(sku)
       total ++
       if (cart[sku].quantity) {
         let item = template.cloneNode(true)
@@ -133,6 +132,8 @@
       if (total === 1) {
         container.removeChild(template)
       }
+      if (total === Object.keys(cart).length)
+      sessionStorage.removeItem('cart')
     }
     </script>
   </body>
