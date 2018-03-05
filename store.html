@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="./css/img/favicon.svg"/>
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/uikit.min.css">
+    <link rel="stylesheet" href="./css/fades.css">
     <script type="text/javascript" src="./js/uikit/uikit.min.js"></script>
     <script type="text/javascript" src="./js/uikit/uikit-icons.min.js"></script>
     <link rel="stylesheet" href="./css/bulma.css">
@@ -39,7 +40,7 @@
                       <p>You haven't added any items yet</p>
                     </div>
                     <div class="dropdown-item" style="display: none;" id="total-list-item">
-                      <p><strong>Shipping: <span class="is-pulled-right" id="cart-shipping"></span></strong></p>
+                      <!-- <p><strong>Shipping: <span class="is-pulled-right" id="cart-shipping"></span></strong></p> -->
                       <p><strong>SubTotal: <span class="is-pulled-right" id="cart-total"></span></strong></p>
                       <p class="level has-text-centered" style="margin-top: 1rem;"><a class="button is-info level-item" href="./checkout.html">Proceed to checkout</a></p>
                     </div>
@@ -58,8 +59,12 @@
             <div class="column is-4">
               <div class="card">
                 <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src="./css/img/products/ES-BUM-010.png" alt="Beleria product item">
+                  <figure class="image is-4by3" style="z-index: 9">
+                    <img src="./css/img/products/ES-BUM-010.png" alt="CocoBum product photo">
+                    <p class="subtitle is-hidden animated aboutText" id="bum-text">
+                      Naturally formulated cream soothes and heals sensitve skin while neutralizing bacteria that cause unwanted diaper rash.
+                      Activated with Zeolite to remove oudors, bacteria and chemicals commonly found in diapers.
+                    </p>
                   </figure>
                 </div>
                 <div class="card-content">
@@ -69,7 +74,7 @@
                       <h6 class="title is-5">Soothing skin cream</h6>
                       <hr>
                       <a id="order4" data-style="Focus" data-sku="ES-BUM-010" class="button is-primary is-outlined orderButton">Add to cart</a>
-                      <a class="button is-secondary is-outlined shareButton">About</a>
+                      <a class="button is-secondary is-outlined aboutButton" data-text="bum-text">About</a>
                       <br>
                     </div>
                   </div>
@@ -81,7 +86,11 @@
               <div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <img src="./css/img/products/ES-CHI-010.png" alt="Bioshielf">
+                    <img src="./css/img/products/ES-CHI-010.png" alt="SunChild product photo">
+                    <p class="subtitle is-hidden animated aboutText longText" id="child-text">
+                      SunChild is a chemical-free alternative to toxic commercial sunscreens formulated for children made with Zeolite.
+                      Builds sun tolerance over time resulting in proteection comparable to SPF 50 sunscreen. Can be used before and after exposure to prevent skin damage and sunburn.
+                    </p>
                   </figure>
                 </div>
                 <div class="card-content">
@@ -91,7 +100,7 @@
                       <h6 class="title is-5">Organic sun protection for kids</h6>
                       <hr>
                       <a id="order5" data-style="Breathe" data-sku="ES-CHI-010" class="button is-primary is-outlined orderButton">Add to cart</a>
-                      <a class="button is-secondary is-outlined shareButton">About</a>
+                      <a class="button is-secondary is-outlined aboutButton" data-text="child-text">About</a>
                       <br>
                     </div>
                   </div>
@@ -104,6 +113,10 @@
                 <div class="card-image">
                   <figure class="image is-4by3">
                     <img src="./css/img/products/ES-BIO-010.png" alt="Bioshield">
+                    <p class="subtitle is-hidden animated aboutText" id="shield-text">
+                      A powerful detoxing agent: it restores and maintains optimum skin health,
+                      is absordbed through the skin and purges free-radicals that cause aging, toxic chemicals, heavy metals, radioactive ions and unhealthy cells.
+                    </p>
                   </figure>
                 </div>
                 <div class="card-content">
@@ -113,7 +126,7 @@
                       <h6 class="title is-5">Maintain optimum skin health</h6>
                       <hr>
                       <a id="order2" data-style="Breathe" data-sku="ES-BIO-010" class="button is-primary is-outlined orderButton">Add to cart</a>
-                      <a class="button is-secondary is-outlined shareButton">About</a>
+                      <a class="button is-secondary is-outlined aboutButton" data-text="shield-text">About</a>
                       <br>
                     </div>
                   </div>
@@ -129,6 +142,10 @@
                 <div class="card-image">
                   <figure class="image is-4by3">
                     <img src="./css/img/products/ES-BEL-010.png" alt="Beleria product item">
+                    <p class="subtitle is-hidden animated aboutText longText" id="bel-text">
+                      A unique blend carefully crafted from the best rejuvenating oils: cacao, coconut, jojoba seed, sea buckthorn, carrot seed, raspbery seed and grapefruit seed.
+                      These oils are rich in bio-available minerals, vitamins, nutrients and fatty acids providing the vital nourishment your skin needs to remain vibrantly youthful.
+                    </p>
                   </figure>
                 </div>
                 <div class="card-content">
@@ -138,7 +155,7 @@
                       <h6 class="title is-5">Organic Rejuvenation</h6>
                       <hr>
                       <a id="order1" data-style="Focus" data-sku="ES-BEL-010" class="button is-primary is-outlined orderButton">Add to cart</a>
-                      <a class="button is-secondary is-outlined shareButton">About</a>
+                      <a class="button is-secondary is-outlined aboutButton" data-text="bel-text">About</a>
                       <br>
                     </div>
                   </div>
@@ -151,6 +168,10 @@
                 <div class="card-image">
                   <figure class="image is-4by3">
                     <img src="./css/img/products/ES-SUN-008.png" alt="">
+                    <p class="subtitle is-hidden animated aboutText longText" id="sheer-text">
+                      SunSheer assists the body in building sun tolerance over time while permitting the vitamins, and melanin, from sunlight to enter the skin cells.
+                      Trapping radiation, zeolite is an innovative way to protect and detoxify the skin at a cellular level. After consitent use, SunSheer is equivalent to SPF 50 sunscreen.
+                    </p>
                   </figure>
                 </div>
                 <div class="card-content">
@@ -160,7 +181,7 @@
                       <h6 class="title is-5">Organic sun protection</h6>
                       <hr>
                       <a id="order3" data-style="Breathe" data-sku="ES-SUN-008" class="button is-primary is-outlined orderButton">Add to cart</a>
-                      <a class="button is-secondary is-outlined shareButton">About</a>
+                      <a class="button is-secondary is-outlined aboutButton" data-text="sheer-text">About</a>
                       <br>
                     </div>
                   </div>
@@ -183,7 +204,7 @@
                       Studies show that toxicity readily enters the body through the skins pores. That's why our motto is:
                       If you can't eat it, don't out it on your skin!
                     </p>
-                    <a href="https://www.sciencedirect.com/topics/neuroscience/zeolite" alt="lin kto sciencedirect.com with more details about Zeolite" class="button is-secondary is-outlined shareButton">Learn more</a>
+                    <a href="https://www.sciencedirect.com/topics/neuroscience/zeolite" target="_blank" alt="lin kto sciencedirect.com with more details about Zeolite" class="button is-secondary is-outlined shareButton">Learn more</a>
                   </div>
                 </div>
               </div>
@@ -299,4 +320,25 @@
     </section>
   </body>
   <script type="text/javascript" src="./js/main.js"></script>
+  <script type="text/javascript">
+    let aboutButtons = document.querySelectorAll('.aboutButton')
+    aboutButtons.forEach(about => {
+      about.addEventListener('click', function (el) {
+        let aboutText = document.getElementById(el.target.dataset.text)
+        aboutText.classList.toggle('fadeInUp')
+        aboutText.classList.toggle('is-hidden')
+        aboutText.classList.remove('fadeOutDown')
+      })
+    })
+    let aboutTextElements = document.querySelectorAll('.aboutText')
+    aboutTextElements.forEach(el => {
+      el.addEventListener('touchend', function (event) {
+        event.target.classList.remove('fadeInUp')
+        event.target.classList.toggle('fadeOutDown')
+        setTimeout(function () {
+          event.target.classList.toggle('is-hidden')
+        }, 1000)
+      })
+    })
+  </script>
 </html>
