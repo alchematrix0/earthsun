@@ -299,15 +299,18 @@ form.addEventListener('submit', event => {
       errorElement.textContent = result.error.message;
     } else {
       // Send the token to your server
+      console.log('created token, post order:')
       console.dir(order)
       axios.post(`${serverURL}/order`, {customer, order, token: result.token},
         {
-          headers:{
+          headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json'
           }
         }
       ).then(response => {
+        console.log('got a response from order submit')
+        console.dir(response)
         sessionStorage.setItem('charge', JSON.stringify(response.data))
         window.location.href = './thankyou.html'
       }).catch(error => {

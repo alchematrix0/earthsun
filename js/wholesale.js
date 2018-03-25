@@ -66,8 +66,10 @@ form.addEventListener('submit', event => {
   document.getElementById('submitCreateWholesaleOrder').className = 'button is-loading is-primary'
   axios.post(`${serverURL}/retrieveCustomer`, {customer},
     {
-      'Content-type': 'application/json',
-      'Accept': 'application/json'
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      }
     }
   )
   .then(response => {
@@ -78,8 +80,10 @@ form.addEventListener('submit', event => {
       console.log('got a source')
       axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
         {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          }
         }
       )
       .then(response => {
