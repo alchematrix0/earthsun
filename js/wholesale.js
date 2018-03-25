@@ -75,10 +75,10 @@ form.addEventListener('submit', event => {
   .then(response => {
     console.log('return from post to server')
     console.dir(response)
-    sessionStorage.setItem('wholesaleAccount', JSON.stringify(response.data.customer))
     if (response.data.error) {
-      throw new Error(message: response.data.error)
+      throw new Error(response.data.error)
     } else if (response.data.customer.sources.data.length) {
+      sessionStorage.setItem('wholesaleAccount', JSON.stringify(response.data.customer))
       console.log('got a source')
       axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
         {
