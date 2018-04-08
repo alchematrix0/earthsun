@@ -38,6 +38,9 @@
                   .media + .media {
                     margin-top: 0;
                   }
+                  .checkbox:hover {
+                    color: whitesmoke;
+                  }
                 </style>
 
                 <article class="media" id="checkoutTemplate">
@@ -116,7 +119,7 @@
                   </li>
                   <br>
                   <li>
-                    <form action="/charge" method="post" id="payment-form" name="checkout-form">
+                    <form method="post" id="payment-form" name="checkout-form">
                       <div class="field is-horizontal">
                         <div class="field-body">
                           <div class="field">
@@ -126,7 +129,7 @@
                           </div>
                           <div class="field">
                             <p class="control">
-                              <input class="input" type="email" autocomplete="email" name="email" placeholder="Email" value="">
+                              <input id="checkoutEmail" class="input" type="email" autocomplete="email" name="email" placeholder="Email" value="">
                             </p>
                           </div>
                         </div>
@@ -135,11 +138,12 @@
                         <div class="field-body">
                           <div class="field">
                             <div class="control">
-                              <input class="input" type="text" autocomplete="street-address" name="address" placeholder="Street address">
+                              <input class="input" type="text" autocomplete="street-address" name="address" placeholder="Shipping street address">
                             </div>
                           </div>
                         </div>
                       </div>
+
                       <div class="field is-horizontal">
                         <div class="field-body">
                           <div class="field">
@@ -167,6 +171,18 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="form-row is-hidden" style="margin-bottom: 12px;" id="existingCustomer">
+                        <div class="field">
+                          <div class="control">
+                            <label class="checkbox">
+                              Pay with existing card ending in <b id="last4"></b>?
+                              <input class="right" type="checkbox" id="chargeExistingCheckbox" name="chargeExistingCustomer">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="form-row">
                         <div id="card-element"></div>
                         <div id="card-errors" role="alert"></div>
@@ -185,21 +201,6 @@
       </div>
 
       <div class="hero-foot">
-        <style media="screen">
-          .tabs.is-toggle a {
-            border-color: #363636;
-            border-radius: 0;
-          }
-          .tabs.is-toggle li:first-child a {
-            border-radius: 0;
-          }
-          .tabs.is-toggle li:last-child a {
-            border-radius: 0;
-          }
-          .dropdown-menu {
-            min-width: 15rem;
-          }
-        </style>
         <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
           <div class="container">
             <ul>
