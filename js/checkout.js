@@ -284,25 +284,24 @@ function lookupCustomer (event) {
   })
 }
 let emailInput = document.getElementById('checkoutEmail')
-emailInput.addEventListener('input', function (event) {
-  lookupCustomer(event)
-})
+// emailInput.addEventListener('input', function (event) {
+//   lookupCustomer(event)
+// })
 
 var form = document.getElementById('payment-form')
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  console.dir(event)
   const cart = JSON.parse(sessionStorage.cart)
   document.getElementById('submitPaymentButton').className = 'is-loading button is-success'
 
-  if (customer && document.getElementById('chargeExistingCheckbox').checked) {
-    console.log('retrieving')
-    return false
-  } else {
-    console.log('nope')
-    return false
-  }
+  // if (customer && document.getElementById('chargeExistingCheckbox').checked) {
+  //   console.log('retrieving')
+  //   return false
+  // } else {
+  //   console.log('nope')
+  //   return false
+  // }
 
   customer = {
     email: event.target.email.value,
@@ -372,7 +371,7 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 } else { // cart in session, parse and load cart
   cart = JSON.parse(sessionStorage.cart)
   loadCartForCheckout(cart)
-  if (document.getElementById('checkoutEmail').value) {
-    lookupCustomer({target: {value: document.getElementById('checkoutEmail').value}})
-  }
+  // if (document.getElementById('checkoutEmail').value) {
+  //   lookupCustomer({target: {value: document.getElementById('checkoutEmail').value}})
+  // }
 }
