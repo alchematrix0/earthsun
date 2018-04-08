@@ -2826,22 +2826,22 @@ a.box:active {
 
 .input::-moz-placeholder,
 .textarea::-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: rgba(54, 54, 54, 0.8);
 }
 
 .input::-webkit-input-placeholder,
 .textarea::-webkit-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: rgba(54, 54, 54, 0.8);
 }
 
 .input:-moz-placeholder,
 .textarea:-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: rgba(54, 54, 54, 0.8);
 }
 
 .input:-ms-input-placeholder,
 .textarea:-ms-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: rgba(54, 54, 54, 0.8);
 }
 
 .input:hover, .input.is-hovered,
