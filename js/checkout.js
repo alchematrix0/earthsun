@@ -4,9 +4,10 @@ var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
 // var serverURL = 'http://localhost:3000'
 // var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 
+let customer = null
 const inventory = {
   'ES-BEL-010': {
-    thumb: 'thumb.png',
+    thumb: 'bel',
     price: 59.99,
     shipping: 4,
     title: 'Beleai',
@@ -14,7 +15,7 @@ const inventory = {
     quantity: 0
   },
   'ES-BIO-010': {
-    thumb: 'thumb.png',
+    thumb: 'bio',
     price: 39.99,
     shipping: 4,
     title: 'Bio Shield',
@@ -22,7 +23,7 @@ const inventory = {
     quantity: 0
   },
   'ES-SUN-008': {
-    thumb: 'thumb.png',
+    thumb: 'sun',
     price: 39.99,
     shipping: 4,
     title: 'Sun Sheer',
@@ -30,7 +31,7 @@ const inventory = {
     quantity: 0
   },
   'ES-BUM-010': {
-    thumb: 'thumb.png',
+    thumb: 'coc',
     price: 34.99,
     shipping: 4,
     title: 'Coco Bum',
@@ -38,7 +39,7 @@ const inventory = {
     quantity: 0
   },
   'ES-CHI-010': {
-    thumb: 'thumb.png',
+    thumb: 'chi',
     price: 39.99,
     shipping: 4,
     title: 'Sun Child',
@@ -258,13 +259,52 @@ myPostalCodeField.addEventListener('change', function(event) {
   card.update({value: {postalCode: event.target.value}})
 })
 
+// set up a listenner on the email input so we can fetch customer on blur if applicable
+function lookupCustomer (event) {
+  axios.post(`${serverURL}/lookupCustomer`, {customer: {email: event.target.value}},
+    {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }
+  ).then(response => {
+    if (!response.data.error) {
+      if (response.data.customer.sources.data.length) {
+        customer = response.data.customer
+        document.getElementById('last4').textContent = response.data.customer.sources.data[0].last4
+        document.getElementById('existingCustomer').classList = 'form-row'
+        document.getElementById('chargeExistingCheckbox').checked = true
+      }
+    } else {
+      customer = null
+      document.getElementById('chargeExistingCheckbox').checked = false
+      document.getElementById('existingCustomer').classList = 'form-row is-hidden'
+    }
+  })
+}
+let emailInput = document.getElementById('checkoutEmail')
+emailInput.addEventListener('input', function (event) {
+  lookupCustomer(event)
+})
+
 var form = document.getElementById('payment-form')
 
 form.addEventListener('submit', event => {
   event.preventDefault();
+  console.dir(event)
   const cart = JSON.parse(sessionStorage.cart)
   document.getElementById('submitPaymentButton').className = 'is-loading button is-success'
-  const customer = {
+
+  if (customer && document.getElementById('chargeExistingCheckbox').checked) {
+    console.log('retrieving')
+    return false
+  } else {
+    console.log('nope')
+    return false
+  }
+
+  customer = {
     email: event.target.email.value,
     shipping: {
       name: `${event.target.name.value}`,
@@ -277,6 +317,7 @@ form.addEventListener('submit', event => {
       }
     }
   }
+
   const order = []
   for (sku in cart) {
     if (cart[sku].quantity > 0) {
@@ -290,6 +331,7 @@ form.addEventListener('submit', event => {
       })
     }
   }
+
   stripe.createToken(card).then(result => {
     if (result.error) {
       console.log('createToken hit an error')
@@ -330,4 +372,7 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 } else { // cart in session, parse and load cart
   cart = JSON.parse(sessionStorage.cart)
   loadCartForCheckout(cart)
+  if (document.getElementById('checkoutEmail').value) {
+    lookupCustomer({target: {value: document.getElementById('checkoutEmail').value}})
+  }
 }

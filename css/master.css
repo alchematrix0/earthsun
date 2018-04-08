@@ -72,9 +72,11 @@ div.hero-foot nav.tabs.is-toggle a {
   border-color: #363636;
   border-radius: 0;
 }
+
 div.hero-foot .tabs.is-toggle li:first-child a {
   border-radius: 0;
 }
+
 div.hero-foot .tabs.is-toggle li:last-child a {
   border-radius: 0;
 }
