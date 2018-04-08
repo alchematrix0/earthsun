@@ -330,13 +330,18 @@ form.addEventListener('submit', event => {
       })
     }
   }
-
+  if (!order.length) {
+    var errorElement = document.getElementById('card-errors')
+    errorElement.textContent = 'Your cart appears to be empty :/'
+    document.getElementById('submitPaymentButton').className = 'button is-success'
+    return false
+  }
   stripe.createToken(card).then(result => {
     if (result.error) {
       console.log('createToken hit an error')
       console.error(result.error)
       // Inform the user if there was an error
-      var errorElement = document.getElementById('card-errors');
+      var errorElement = document.getElementById('card-errors')
       errorElement.textContent = result.error.message;
     } else {
       // Send the token to your server
