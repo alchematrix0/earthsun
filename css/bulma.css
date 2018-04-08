@@ -10404,8 +10404,9 @@ label.panel-block:hover {
 .hero.is-warning a.navbar-item:hover, .hero.is-warning a.navbar-item.is-active,
 .hero.is-warning .navbar-link:hover,
 .hero.is-warning .navbar-link.is-active {
-  background-color: #ffd83d;
+  background-color: #f9d23780;
   color: rgba(0, 0, 0, 0.7);
+  border-radius: 3%;
 }
 
 .hero.is-warning .tabs a {
@@ -10436,7 +10437,7 @@ label.panel-block:hover {
 }
 
 .hero.is-warning.is-bold {
-  background-image: linear-gradient(141deg, #ffaf24 0%, #ffdd57 71%, #fffa70 100%);
+  background-image: linear-gradient(141deg, #ffaf24 0%, #ffdd57 71%, #c9c43d 100%);
 }
 
 @media screen and (max-width: 768px) {
