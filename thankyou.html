@@ -99,12 +99,9 @@
     <script src="./js/receipt.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-      if (typeof sessionStorage.charge === 'object') {
-        let charge = JSON.parse(sessionStorage.charge)
-      }
-      if (typeof sessionStorage.cart === 'object') {
-        let cart = JSON.parse(sessionStorage.cart)
-      }
+      let order = JSON.parse(sessionStorage.order)
+      let dispatchResults = JSON.parse(sessionStorage.dispatchResults)
+      cart = JSON.parse(sessionStorage.cart)
       let total = 0
       const container = document.getElementById('checkoutParent')
       const template = document.getElementById('checkoutTemplate')
@@ -129,11 +126,9 @@
         if (total === 1) {
           container.removeChild(template)
         }
-        if (total === Object.keys(cart).length)
-        sessionStorage.removeItem('cart')
       }
-      if (cart && charge.order) {
-        genReceipt(cart, charge.order)
+      if (cart && order) {
+        genReceipt(cart, order, typeof dispatchResults.orderId !== 'undefined' ? dispatchResults.orderId : null)
       }
     </script>
   </body>

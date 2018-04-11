@@ -1,4 +1,4 @@
-function genReceipt (cart, order) {
+function genReceipt (cart, order, orderId) {
   let invoiceNumber = order.id
   let items = order.items.filter(i => i.type === 'sku').map(item => {
     let thisItem = cart[item.parent]
@@ -9,7 +9,7 @@ function genReceipt (cart, order) {
   let gst = Number(order.items.filter(i => i.type === 'tax')[0])
   let shipping = Number(order.items.filter(i => i.type === 'shipping')[0])
   let grandTotal = order.amount / 100
-  let today = new Date().toISODateString().substring(0, 10)
+  let today = new Date().toISOString().substring(0, 10)
 
   var columns = [
     {title: "", dataKey: "img"},
@@ -26,9 +26,9 @@ function genReceipt (cart, order) {
 
   // ES Info
   doc.setFontSize(12)
-  doc.text(["Earth Sun Organics ltd", "55 union bay hwy", "Union Bay BC", "V3L 0A8"], 220, 80)
+  doc.text(["Earth Sun Organics ltd", "55 union bay hwy", "Union Bay BC", "V3L 0A8", today], 220, 80)
   // invoice details
-  doc.text([order.shipping.name, `${order.shipping.address.line1} ${order.shipping.address.postal_code}`, today, `Order #: ${invoiceNumber}`,`Total: ${grandTotal.toFixed(2)}`], 400, 80)
+  doc.text([order.shipping.name, `${order.shipping.address.line1} ${order.shipping.address.postal_code}`, `${invoiceNumber}`, `${orderId}`, `Total: ${grandTotal.toFixed(2)}`], 400, 80)
   doc.setFontStyle('normal')
   doc.setFontSize(12)
   doc.autoTable(columns, items, {
@@ -41,7 +41,7 @@ function genReceipt (cart, order) {
     drawCell: function(cell, opts) {
       if (opts.column.dataKey === 'img') {
         cell.width = 80
-        let thumb = opts.row.raw.title.includes('child') ? 'chi' : opts.row.raw.title.substring(0, 3).toLowerCase()
+        let thumb = opts.row.raw.title === 'Sun Child' ? 'chi' : opts.row.raw.title.substring(0, 3).toLowerCase()
         images.push({
           url: thumbs[thumb],
           x: cell.textPos.x,
