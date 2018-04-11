@@ -357,7 +357,9 @@ form.addEventListener('submit', event => {
       ).then(response => {
         console.log('got a response from order submit')
         console.dir(response)
-        sessionStorage.setItem('charge', JSON.stringify(response.data))
+        sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
+        sessionStorage.setItem('order', JSON.stringify(response.data.order))
+        sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
         window.location.href = './thankyou.html'
       }).catch(error => {
         console.error(error)
