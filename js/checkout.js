@@ -35,7 +35,7 @@ const inventory = {
     price: 34.99,
     shipping: 4,
     title: 'Coco Bum',
-    description: 'Diaper ointment',
+    description: 'Gentle coconut ointment',
     quantity: 0
   },
   'ES-CHI-010': {
