@@ -39,53 +39,52 @@ sameAddressCheckbox.addEventListener('change', function () {
   }
 })
 var returnCustomer = false
-var returnCustomerCheckbox = document.getElementById('returnCustomerCheckbox')
-returnCustomerCheckbox.addEventListener('change', function () {
-  if (document.getElementById('returnCustomerCheckbox').checked) {
-    document.getElementById('cardField').classList.add('is-invisible')
-  } else {
-    document.getElementById('cardField').classList.remove('is-invisible')
-  }
-})
+// var returnCustomerCheckbox = document.getElementById('returnCustomerCheckbox')
+// returnCustomerCheckbox.addEventListener('change', function () {
+//   if (document.getElementById('returnCustomerCheckbox').checked) {
+//     document.getElementById('cardField').classList.add('is-invisible')
+//   } else {
+//     document.getElementById('cardField').classList.remove('is-invisible')
+//   }
+// })
 
 var form = document.getElementById('createCustomer-form')
 
 form.addEventListener('submit', event => {
-
+  let inputs = event.target
   event.preventDefault();
 
-  returnCustomer = document.getElementById('returnCustomerCheckbox').checked
-  document.getElementById('submitCreateCustomer').className = 'is-loading button is-success'
+  // returnCustomer = document.getElementById('returnCustomerCheckbox').checked
+  document.getElementById('submitCreateCustomer').className = 'is-loading button is-info'
 
   const address = {
-    line1: `${event.target.shippingAddress.value}`,
-    city: `${event.target.city.value}`,
-    state: `${event.target.state.value}`,
-    country:  `${event.target.country.value}`,
-    postal_code: `${event.target.postalCode.value}`
+    line1: `${inputs.shippingAddress.value}`,
+    city: `${inputs.city.value}`,
+    state: `${inputs.state.value}`,
+    country:  `${inputs.country.value}`,
+    postal_code: `${inputs.postalCode.value}`
   }
 
   const billing = document.getElementById('sameAddressCheckbox').checked ? address : {
-    line1: `${event.target.addressBilling.value || event.target.shippingAddress.value}`,
-    city: `${event.target.cityBilling.value || event.target.city.value}`,
-    state: `${event.target.stateBilling.value || event.target.state.value}`,
-    country:  `${event.target.country.value}`,
-    postal_code: `${event.target.postalCodeBilling.value || event.target.postalCode.value}`
+    line1: `${inputs.addressBilling.value || inputs.shippingAddress.value}`,
+    city: `${inputs.cityBilling.value || inputs.city.value}`,
+    state: `${inputs.stateBilling.value || inputs.state.value}`,
+    country:  `${inputs.country.value}`,
+    postal_code: `${inputs.postalCodeBilling.value || inputs.postalCode.value}`
   }
 
   const customer = {
-    email: event.target.email.value,
-    description: `Earth sun wholesale customer: ${event.target.company.value}`,
+    email: inputs.email.value,
+    description: `Earth sun wholesale customer: ${inputs.company.value}`,
     shipping: {
-      name: `${event.target.company.value}`,
-      phone: `${event.target.phone.value}`,
+      name: `${inputs.company.value}`,
+      phone: `${inputs.phone.value}`,
       address
     },
     metadata: {
-      contactPhone: `${event.target.phone.value}`,
-      contactName: `${event.target.name.value}`,
-      role: event.target.department.value,
-      details: event.target.details.value,
+      contactPhone: `${inputs.phone.value}`,
+      contactName: `${inputs.name.value}`,
+      details: inputs.details.value,
       billingLine1: billing.line1,
       billingPostal: billing.postal_code
     }
@@ -108,6 +107,9 @@ form.addEventListener('submit', event => {
       .then(response => {
         console.log('return from post to server')
         console.dir(response)
+        if (response.data.statusCode) {
+          throw new Error(response.data.message)
+        }
         const newCustomer = Object.assign({}, response.data, { billing })
         sessionStorage.setItem('wholesaleAccount', JSON.stringify(newCustomer))
         if (response.data.sources.data.length) {
@@ -117,14 +119,16 @@ form.addEventListener('submit', event => {
         }
       })
       .catch(error => {
-        document.getElementById('submitCreateCustomer').className = 'button is-success'
+        document.getElementById('submitCreateCustomer').className = 'button is-info'
         console.error(error)
+        var errorElement = document.getElementById('card-errors')
+        errorElement.textContent = error.message
         // update UI to notify user of error
-        window.location.href = './error.html'
+        // window.location.href = './error.html'
       })
     })
     .catch(error => {
-      document.getElementById('submitCreateCustomer').className = 'button is-success'
+      document.getElementById('submitCreateCustomer').className = 'button is-info'
       console.log('token creation error')
       console.error(error)
     })

@@ -89,26 +89,7 @@
                   </div>
                 </div>
 
-                <div class="field is-horizontal">
-                  <div class="field-label is-normal">
-                    <label class="label">Department</label>
-                  </div>
-                  <div class="field-body">
-                    <div class="field is-narrow">
-                      <div class="control">
-                        <div class="select is-fullwidth">
-                          <select name="department">
-                            <option>Purchasing</option>
-                            <option>Sales</option>
-                            <option>Marketing</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="field is-horizontal" style="line-height: 2;">
+                <!-- <div class="field is-horizontal" style="line-height: 2;">
                   <div class="field-label">
                     <label class="label">Return customer?</label>
                   </div>
@@ -121,7 +102,7 @@
                     </div>
                     <p style="font-size: 0.9rem;" class="help">If so, we can retrieve your payment info via your email</p>
                   </div>
-                </div>
+                </div> -->
 
                 <div id="cardField" class="field is-horizontal">
                   <div class="field-label">
@@ -169,11 +150,14 @@
                       </p>
                     </div>
                     <div class="field is-narrow">
-                      <p class="control">
-                        <input class="input" type="text" placeholder="Country" autocomplete="country" name="country" required>
-                      </p>
+                      <div class="select">
+                        <select name="country">
+                          <option selected>Canada</option>
+                          <option>US</option>
+                        </select>
+                      </div>
                     </div>
-                    <div class="field is-narrow">
+                    <div class="field">
                       <div class="control" style="padding: 0.25em;">
                         <label class="checkbox">
                           <input checked name="sameAddres" id="sameAddressCheckbox" type="checkbox" style="vertical-align: bottom">
@@ -273,9 +257,6 @@
     </section>
   </body>
   <script type="text/javascript" src="./js/account.js"></script>
-  <script type="text/javascript">
-    document.getElementById('returnCustomerCheckbox').checked = false
-  </script>
   <style>
     input[type='checkbox']:focus {
       outline:0

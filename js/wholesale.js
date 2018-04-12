@@ -12,11 +12,11 @@ for (var i = 0; i < db.length; i++) {
   })
 }
 let catalog = {
-  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, price: 480},
-  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 320},
-  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, price: 320},
-  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, price: 280},
-  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, price: 320}
+  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Beleai skin cleanser', price: 480},
+  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Bio Shield: sun protection', price: 320},
+  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun sheer: sun protection', price: 320},
+  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Gentle coconut ointment', price: 280},
+  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun child: sun protection for children', price: 320}
   // 'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
   // 'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
   // 'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
@@ -42,13 +42,12 @@ form.addEventListener('submit', event => {
   const customer = {
     email: event.target.email.value,
     id: event.target.account.value,
-    details: form.elements.details.value
   }
+  let details = form.elements.details.value || null
   if (event.target.saveAccountLocally.checked) {
     localStorage.setItem('earthsunAccountId', customer.id)
     localStorage.setItem('earthsunAccountEmail', customer.email)
   }
-  console.dir(customer)
   let order = []
   for (sku in catalog) {
     if (catalog[sku].quantity > 0) {
@@ -63,7 +62,7 @@ form.addEventListener('submit', event => {
     }
   }
   console.dir(order)
-  document.getElementById('submitCreateWholesaleOrder').className = 'button is-loading is-primary'
+  document.getElementById('submitCreateWholesaleOrder').className = 'button is-loading is-info'
   axios.post(`${serverURL}/retrieveCustomer`, {customer},
     {
       headers: {
@@ -78,6 +77,7 @@ form.addEventListener('submit', event => {
     if (response.data.error) {
       throw new Error(response.data.error)
     } else if (response.data.customer.sources.data.length) {
+      response.data.customer.details = details
       sessionStorage.setItem('wholesaleAccount', JSON.stringify(response.data.customer))
       console.log('got a source')
       axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
@@ -90,14 +90,20 @@ form.addEventListener('submit', event => {
       )
       .then(response => {
         sessionStorage.setItem('cart', JSON.stringify(catalog))
+        sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
+        sessionStorage.setItem('order', JSON.stringify(response.data.order))
+        sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
         window.location.href = './thankyou.html'
       })
       .catch(error => {
-        window.location.href = './error.html'
+        console.log('caught error')
+        document.getElementById('submitCreateWholesaleOrder').className = 'button is-info'
+        document.getElementById('errorBox').innerHTML = `Payment failure: ${error.response.data}`
+        console.error(error)
       })
     } else {
       alert('No payment method found! Please complete account setup')
-      window.location.href = '.account/.html'
+      window.location.href = './addPaymentSource.html'
     }
   })
   .catch(error => {
