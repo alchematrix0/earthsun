@@ -39,14 +39,6 @@ sameAddressCheckbox.addEventListener('change', function () {
   }
 })
 var returnCustomer = false
-// var returnCustomerCheckbox = document.getElementById('returnCustomerCheckbox')
-// returnCustomerCheckbox.addEventListener('change', function () {
-//   if (document.getElementById('returnCustomerCheckbox').checked) {
-//     document.getElementById('cardField').classList.add('is-invisible')
-//   } else {
-//     document.getElementById('cardField').classList.remove('is-invisible')
-//   }
-// })
 
 var form = document.getElementById('createCustomer-form')
 
@@ -54,7 +46,6 @@ form.addEventListener('submit', event => {
   let inputs = event.target
   event.preventDefault();
 
-  // returnCustomer = document.getElementById('returnCustomerCheckbox').checked
   document.getElementById('submitCreateCustomer').className = 'is-loading button is-info'
 
   const address = {
@@ -95,7 +86,6 @@ form.addEventListener('submit', event => {
   card.update({value: {postalCode: billing.postal_code}})
   stripe.createToken(card)
   .then(response => {
-    console.dir(response)
     customer.source = response.token.id
     axios.post(`${serverURL}/newcustomer`, {customer, billing, token: response.token},
       {
@@ -104,8 +94,6 @@ form.addEventListener('submit', event => {
       }
     )
     .then(response => {
-      console.log('return from post to server')
-      console.dir(response)
       if (response.data.statusCode) {
         throw new Error(response.data.message)
       }
@@ -119,7 +107,6 @@ form.addEventListener('submit', event => {
     })
     .catch(error => {
       document.getElementById('submitCreateCustomer').className = 'button is-info'
-      console.error(error)
       var errorElement = document.getElementById('card-errors')
       errorElement.textContent = error.message
     })
@@ -127,6 +114,7 @@ form.addEventListener('submit', event => {
   .catch(error => {
     document.getElementById('submitCreateCustomer').className = 'button is-info'
     console.log('token creation error')
-    console.error(error)
+    var errorElement = document.getElementById('card-errors')
+    errorElement.textContent = error.message
   })
 })

@@ -4,7 +4,6 @@ var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
 // var serverURL = 'http://localhost:3000'
 // var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 
-let existingCustomer = null
 const headers = { 'Content-type': 'application/json', 'Accept': 'application/json' }
 
 const inventory = {
@@ -279,10 +278,6 @@ function lookupCustomer (event) {
     }
   })
 }
-let emailInput = document.getElementById('checkoutEmail')
-// emailInput.addEventListener('input', function (event) {
-//   lookupCustomer(event)
-// })
 
 var form = document.getElementById('payment-form')
 
@@ -329,76 +324,23 @@ form.addEventListener('submit', event => {
 
   stripe.createToken(card).then(result => {
     if (result.error) {
-      console.log('createToken hit an error')
-      console.error(result.error)
-      // Inform the user if there was an error
       var errorElement = document.getElementById('card-errors')
       errorElement.textContent = result.error.message;
       return false
     } else {
       // Send the token to your server
-      console.log('created token, post order:')
-      console.dir(order)
       axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
       .then(response => {
-        console.log('got a response from order submit')
-        console.dir(response)
         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
         sessionStorage.setItem('order', JSON.stringify(response.data.order))
         sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
         window.location.href = './thankyou.html'
       }).catch(error => {
-        console.error(error)
         sessionStorage.setItem('paymentError', JSON.stringify(error))
         window.location.href = './error.html'
       })
     }
   })
-
-
-  // if (useExisting) {
-  //   axios.post(`${serverURL}/charge`, {customer, order}, {headers})
-  //   .then(response => {
-  //     console.log('got a response from order submit')
-  //     console.dir(response)
-  //     sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
-  //     sessionStorage.setItem('order', JSON.stringify(response.data.order))
-  //     sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
-  //     window.location.href = './thankyou.html'
-  //   }).catch(error => {
-  //     console.error(error)
-  //     sessionStorage.setItem('paymentError', JSON.stringify(error))
-  //     window.location.href = './error.html'
-  //   })
-  // } else {
-  //   stripe.createToken(card).then(result => {
-  //     if (result.error) {
-  //       console.log('createToken hit an error')
-  //       console.error(result.error)
-  //       // Inform the user if there was an error
-  //       var errorElement = document.getElementById('card-errors')
-  //       errorElement.textContent = result.error.message;
-  //       return false
-  //     } else {
-  //       // Send the token to your server
-  //       console.log('created token, post order:')
-  //       console.dir(order)
-  //       axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
-  //       .then(response => {
-  //         console.log('got a response from order submit')
-  //         console.dir(response)
-  //         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
-  //         sessionStorage.setItem('order', JSON.stringify(response.data.order))
-  //         sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
-  //         window.location.href = './thankyou.html'
-  //       }).catch(error => {
-  //         console.error(error)
-  //         sessionStorage.setItem('paymentError', JSON.stringify(error))
-  //         window.location.href = './error.html'
-  //       })
-  //     }
-  //   })
-  // }
 })
 
 // run this module
@@ -409,7 +351,4 @@ if (!sessionStorage.cart) { // no cart in session, set to blank
 } else { // cart in session, parse and load cart
   cart = JSON.parse(sessionStorage.cart)
   loadCartForCheckout(cart)
-  // if (document.getElementById('checkoutEmail').value) {
-  //   lookupCustomer({target: {value: document.getElementById('checkoutEmail').value}})
-  // }
 }
