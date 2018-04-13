@@ -4,7 +4,9 @@
 var serverURL = 'http://localhost:3000'
 var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 
-let customer = null
+let existingCustomer = null
+const headers = { 'Content-type': 'application/json', 'Accept': 'application/json' }
+
 const inventory = {
   'ES-BEL-010': {
     thumb: 'bel',
@@ -199,7 +201,7 @@ loadCartForCheckout = (cart = invetory) => { // view layer items list, then, if 
     container.removeChild(template)
     document.getElementById('coupon-code').classList.toggle('is-hidden')
     document.getElementById('subtotal').innerHTML = `Subtotal: <span class="is-pulled-right">${cart.subtotal.subtotal.toFixed(2)}</span>`
-    document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping.toFixed(2)}</span>`
+    document.getElementById('shipping').innerHTML = `Shipping: <span class="is-pulled-right">${cart.subtotal.shipping ? cart.subtotal.shipping.toFixed(2) : '<b>Free</b>'}</span>`
     document.getElementById('taxes').innerHTML = `GST/PST: <span class="is-pulled-right">${cart.subtotal.gstPst.toFixed(2)}</span>`
     document.getElementById('total').innerHTML = `Order total: <span class="is-pulled-right">${(cart.subtotal.grandTotal).toFixed(2)}</span>`
     document.getElementById('coupon-form').addEventListener('submit', function(e) {
@@ -261,23 +263,17 @@ myPostalCodeField.addEventListener('change', function(event) {
 
 // set up a listenner on the email input so we can fetch customer on blur if applicable
 function lookupCustomer (event) {
-  axios.post(`${serverURL}/lookupCustomer`, {customer: {email: event.target.value}},
-    {
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }
-  ).then(response => {
+  axios.post(`${serverURL}/lookupCustomer`, {customer: {email: event.target.value}}, {headers})
+  .then(response => {
     if (!response.data.error) {
       if (response.data.customer.sources.data.length) {
-        customer = response.data.customer
+        existingCustomer = response.data.customer
         document.getElementById('last4').textContent = response.data.customer.sources.data[0].last4
         document.getElementById('existingCustomer').classList = 'form-row'
         document.getElementById('chargeExistingCheckbox').checked = true
       }
     } else {
-      customer = null
+      existingCustomer = null
       document.getElementById('chargeExistingCheckbox').checked = false
       document.getElementById('existingCustomer').classList = 'form-row is-hidden'
     }
@@ -294,16 +290,9 @@ form.addEventListener('submit', event => {
   event.preventDefault();
   const cart = JSON.parse(sessionStorage.cart)
   document.getElementById('submitPaymentButton').className = 'is-loading button is-success'
+  let useExisting = existingCustomer && document.getElementById('chargeExistingCheckbox').checked
 
-  // if (customer && document.getElementById('chargeExistingCheckbox').checked) {
-  //   console.log('retrieving')
-  //   return false
-  // } else {
-  //   console.log('nope')
-  //   return false
-  // }
-
-  customer = {
+  let customer = {
     email: event.target.email.value,
     shipping: {
       name: `${event.target.name.value}`,
@@ -330,12 +319,14 @@ form.addEventListener('submit', event => {
       })
     }
   }
+
   if (!order.length) {
     var errorElement = document.getElementById('card-errors')
     errorElement.textContent = 'Your cart appears to be empty :/'
     document.getElementById('submitPaymentButton').className = 'button is-success'
     return false
   }
+
   stripe.createToken(card).then(result => {
     if (result.error) {
       console.log('createToken hit an error')
@@ -343,18 +334,13 @@ form.addEventListener('submit', event => {
       // Inform the user if there was an error
       var errorElement = document.getElementById('card-errors')
       errorElement.textContent = result.error.message;
+      return false
     } else {
       // Send the token to your server
       console.log('created token, post order:')
       console.dir(order)
-      axios.post(`${serverURL}/order`, {customer, order, token: result.token},
-        {
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json'
-          }
-        }
-      ).then(response => {
+      axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
+      .then(response => {
         console.log('got a response from order submit')
         console.dir(response)
         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
@@ -368,6 +354,51 @@ form.addEventListener('submit', event => {
       })
     }
   })
+
+
+  // if (useExisting) {
+  //   axios.post(`${serverURL}/charge`, {customer, order}, {headers})
+  //   .then(response => {
+  //     console.log('got a response from order submit')
+  //     console.dir(response)
+  //     sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
+  //     sessionStorage.setItem('order', JSON.stringify(response.data.order))
+  //     sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
+  //     window.location.href = './thankyou.html'
+  //   }).catch(error => {
+  //     console.error(error)
+  //     sessionStorage.setItem('paymentError', JSON.stringify(error))
+  //     window.location.href = './error.html'
+  //   })
+  // } else {
+  //   stripe.createToken(card).then(result => {
+  //     if (result.error) {
+  //       console.log('createToken hit an error')
+  //       console.error(result.error)
+  //       // Inform the user if there was an error
+  //       var errorElement = document.getElementById('card-errors')
+  //       errorElement.textContent = result.error.message;
+  //       return false
+  //     } else {
+  //       // Send the token to your server
+  //       console.log('created token, post order:')
+  //       console.dir(order)
+  //       axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
+  //       .then(response => {
+  //         console.log('got a response from order submit')
+  //         console.dir(response)
+  //         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
+  //         sessionStorage.setItem('order', JSON.stringify(response.data.order))
+  //         sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
+  //         window.location.href = './thankyou.html'
+  //       }).catch(error => {
+  //         console.error(error)
+  //         sessionStorage.setItem('paymentError', JSON.stringify(error))
+  //         window.location.href = './error.html'
+  //       })
+  //     }
+  //   })
+  // }
 })
 
 // run this module

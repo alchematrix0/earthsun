@@ -92,54 +92,23 @@ form.addEventListener('submit', event => {
 
   sessionStorage.setItem('wholesaleAccount', JSON.stringify(customer))
 
-  if (!returnCustomer) { // create token and create new customer server side
-    card.update({value: {postalCode: billing.postal_code}})
-    stripe.createToken(card)
-    .then(response => {
-      console.dir(response)
-      customer.source = response.token.id
-      axios.post(`${serverURL}/newcustomer`, {customer, billing, token: response.token},
-        {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        }
-      )
-      .then(response => {
-        console.log('return from post to server')
-        console.dir(response)
-        if (response.data.statusCode) {
-          throw new Error(response.data.message)
-        }
-        const newCustomer = Object.assign({}, response.data, { billing })
-        sessionStorage.setItem('wholesaleAccount', JSON.stringify(newCustomer))
-        if (response.data.sources.data.length) {
-          window.location.href = './accountCreated.html'
-        } else {
-          window.location.href = './addPaymentSource.html'
-        }
-      })
-      .catch(error => {
-        document.getElementById('submitCreateCustomer').className = 'button is-info'
-        console.error(error)
-        var errorElement = document.getElementById('card-errors')
-        errorElement.textContent = error.message
-        // update UI to notify user of error
-        // window.location.href = './error.html'
-      })
-    })
-    .catch(error => {
-      document.getElementById('submitCreateCustomer').className = 'button is-info'
-      console.log('token creation error')
-      console.error(error)
-    })
-  } else { // is a customer, post to update customer account
-    axios.post(`${serverURL}/newcustomer`, {customer, billing, token: null},
-    {
-      headers:{
+  card.update({value: {postalCode: billing.postal_code}})
+  stripe.createToken(card)
+  .then(response => {
+    console.dir(response)
+    customer.source = response.token.id
+    axios.post(`${serverURL}/newcustomer`, {customer, billing, token: response.token},
+      {
         'Content-type': 'application/json',
         'Accept': 'application/json'
       }
-    }).then(response => {
+    )
+    .then(response => {
+      console.log('return from post to server')
+      console.dir(response)
+      if (response.data.statusCode) {
+        throw new Error(response.data.message)
+      }
       const newCustomer = Object.assign({}, response.data, { billing })
       sessionStorage.setItem('wholesaleAccount', JSON.stringify(newCustomer))
       if (response.data.sources.data.length) {
@@ -147,12 +116,17 @@ form.addEventListener('submit', event => {
       } else {
         window.location.href = './addPaymentSource.html'
       }
-    }).catch(error => {
-      document.getElementById('submitCreateCustomer').className = 'button is-success'
-      console.error(error)
-      window.location.href = './error.html'
     })
-  }
-
-
+    .catch(error => {
+      document.getElementById('submitCreateCustomer').className = 'button is-info'
+      console.error(error)
+      var errorElement = document.getElementById('card-errors')
+      errorElement.textContent = error.message
+    })
+  })
+  .catch(error => {
+    document.getElementById('submitCreateCustomer').className = 'button is-info'
+    console.log('token creation error')
+    console.error(error)
+  })
 })
