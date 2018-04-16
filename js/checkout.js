@@ -194,6 +194,8 @@ loadCartForCheckout = (cart = invetory) => { // view layer items list, then, if 
             break
         }
       })
+    } else {
+      document.getElementsByClassName('media-left')[0].classList.toggle('is-hidden-mobile')
     }
   }
   if (total) {
