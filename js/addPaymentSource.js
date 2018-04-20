@@ -1,7 +1,7 @@
-var serverURL = 'http://localhost:3000/addPaymentSource'
-var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
-// var serverURL = 'https://www.earthsun.ca'
-// var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
+// var serverURL = 'http://localhost:3000/addPaymentSource'
+// var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
+var serverURL = 'https://www.earthsun.ca'
+var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq');
 
 var elements = stripe.elements();
 
