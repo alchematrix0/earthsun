@@ -22,6 +22,13 @@ let catalog = {
   // 'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
   // 'BEL-BIO-SUN-3PK': {title: '3 pack Belerai BioShield SunSheer half dozen', quantity: 0, wholesaleAmount: 6, price: 360}
 }
+const wholesaleSkus = {
+  'ES-BEL-010': 'WS-BEL-010',
+  'ES-BIO-010': 'WS-BIO-010',
+  'ES-SUN-008': 'WS-SUN-008',
+  'ES-BUM-010': 'WS-BUM-010',
+  'ES-CHI-010': 'WS-CHI-010'
+}
 if (sessionStorage.wholesaleAccount) {
   let account = JSON.parse(sessionStorage.wholesaleAccount)
   document.getElementById('accountNumberInput').value = account.id
@@ -55,8 +62,8 @@ form.addEventListener('submit', event => {
       order.push({
         amount: item.price * 100,
         currency: 'cad',
-        parent: sku,
-        quantity: item.quantity * item.wholesaleAmount,
+        parent: wholesaleSkus[sku],
+        quantity: item.quantity,
         type: 'sku'
       })
     }
