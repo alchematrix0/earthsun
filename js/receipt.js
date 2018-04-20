@@ -1,7 +1,7 @@
 function genReceipt (cart, order, orderId) {
   let invoiceNumber = order.id
   let items = order.items.filter(i => i.type === 'sku').map(item => {
-    let thisItem = cart[item.parent]
+    let thisItem = cart[item.parent.replace('WS', 'ES')]
     thisItem.sub = Number(thisItem.quantity) * Number(thisItem.price)
     return thisItem
   })
