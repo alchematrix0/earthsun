@@ -171,6 +171,7 @@ loadCartForCheckout = (cart = invetory) => { // view layer items list, then, if 
   const template = document.getElementById('checkoutTemplate')
   for (sku in cart) {
     if (cart[sku].quantity) {
+      console.log(`yes quantity ${sku}`)
       total++
 
       let item = template.cloneNode(true)
@@ -196,7 +197,7 @@ loadCartForCheckout = (cart = invetory) => { // view layer items list, then, if 
         }
       })
     } else {
-      document.getElementsByClassName('media-left')[0].classList.toggle('is-hidden-mobile')
+      // document.getElementsByClassName('media-left')[0].classList.toggle('is-hidden-mobile')
     }
   }
   if (total) {
@@ -332,17 +333,8 @@ form.addEventListener('submit', event => {
       return false
     } else {
       // Send the token to your server
-<<<<<<< HEAD
-      console.log('created token, post order:')
-      console.dir(order)
       axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
       .then(response => {
-        console.log('got a response from order submit')
-        console.dir(response)
-=======
-      axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
-      .then(response => {
->>>>>>> v2live
         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
         sessionStorage.setItem('order', JSON.stringify(response.data.order))
         sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
