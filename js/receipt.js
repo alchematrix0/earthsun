@@ -28,7 +28,7 @@ function genReceipt (cart, order, orderId) {
   doc.setFontSize(12)
   doc.text(["Earth Sun Organics ltd", "55 union bay hwy", "Union Bay BC", "V3L 0A8", today], 220, 80)
   // invoice details
-  doc.text([order.shipping.name, `${order.shipping.address.line1} ${order.shipping.address.postal_code}`, `${invoiceNumber}`, `${orderId}`, `Total: ${grandTotal.toFixed(2)}`], 400, 80)
+  doc.text([order.shipping.name, `${order.shipping.address.line1} ${order.shipping.address.postal_code}`, `${invoiceNumber}`, orderId ? `${orderId}` : '', `Total: ${grandTotal.toFixed(2)}`], 400, 80)
   doc.setFontStyle('normal')
   doc.setFontSize(12)
   doc.autoTable(columns, items, {

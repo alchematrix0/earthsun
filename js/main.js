@@ -6,7 +6,7 @@ const inventory = {
     price: 59.99,
     shipping: 4,
     title: 'Beleai',
-    description: 'b stuff',
+    description: 'Beleai deep detoxifier',
     quantity: 0
   },
   'ES-BIO-010': {
@@ -14,7 +14,7 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Bio Shield',
-    description: 'shield stuff',
+    description: 'Sun Shield sun protection',
     quantity: 0
   },
   'ES-SUN-008': {
@@ -22,7 +22,7 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Sun Sheer',
-    description: 'sheerly sun',
+    description: 'Sun Sheer sun protection',
     quantity: 0
   },
   'ES-BUM-010': {
@@ -30,7 +30,7 @@ const inventory = {
     price: 34.99,
     shipping: 6,
     title: 'Coco Bum',
-    description: 'Coconut',
+    description: 'Coconut ointment',
     quantity: 0
   },
   'ES-CHI-010': {
@@ -38,7 +38,7 @@ const inventory = {
     price: 39.99,
     shipping: 4,
     title: 'Sun Child',
-    description: 'Sun child',
+    description: 'Sun protection for kids',
     quantity: 0
   },
   // 'ES-5PK': {

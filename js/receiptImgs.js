@@ -17,7 +17,7 @@ let cart = {
     "price": 59.99,
     "shipping": 4,
     "title": "Beleai",
-    "description": "b stuff",
+    "description": "Beleai skin detoxifier",
     "quantity": 0
   },
   "ES-BIO-010": {
@@ -25,7 +25,7 @@ let cart = {
     "price": 39.99,
     "shipping": 4,
     "title": "Bio Shield",
-    "description": "shield stuff",
+    "description": "Bio shield sun protection",
     "quantity": 1,
     "sub": 39.99
   },
@@ -34,7 +34,7 @@ let cart = {
     "price": 39.99,
     "shipping": 4,
     "title": "Sun Sheer",
-    "description": "sheerly sun",
+    "description": "Sun sheer sun protection",
     "quantity": 0
   },
   "ES-BUM-010": {
@@ -42,7 +42,7 @@ let cart = {
     "price": 34.99,
     "shipping": 6,
     "title": "Coco Bum",
-    "description": "Coconut",
+    "description": "Coconut ointment",
     "quantity": 1,
     "sub": 34.99
   },
@@ -51,7 +51,7 @@ let cart = {
     "price": 39.99,
     "shipping": 4,
     "title": "Sun Child",
-    "description": "Sun child",
+    "description": "Sun protection for kids",
     "quantity": 1,
     "sub": 39.99
   },
