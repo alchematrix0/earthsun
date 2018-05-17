@@ -335,11 +335,18 @@ form.addEventListener('submit', event => {
       // Send the token to your server
       axios.post(`${serverURL}/order`, {customer, order, token: result.token}, {headers})
       .then(response => {
+        console.log('Front end got a response')
+        console.dir(response)
+        if (response.error) {
+          console.log('front end response contains an error')
+        }
         sessionStorage.setItem('charge', JSON.stringify(response.data.charge))
         sessionStorage.setItem('order', JSON.stringify(response.data.order))
         sessionStorage.setItem('dispatchResults', JSON.stringify(response.data.dispatchResults))
         window.location.href = './thankyou.html'
       }).catch(error => {
+        console.log('front end caught an error')
+        console.error(error)
         sessionStorage.setItem('paymentError', JSON.stringify(error))
         window.location.href = './error.html'
       })
