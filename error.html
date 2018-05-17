@@ -29,7 +29,8 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Yikes!</h1>
-          <h4>Couldn't process your order. Please contact support@earthsun.ca</h4>
+          <h4>Couldn't process your order. Please contact sales@earthsun.ca</h4>
+          <p id="errorMessage"></p>
         </div>
       </div>
       <div class="hero-foot">
@@ -66,4 +67,10 @@
       </div>
     </section>
   </body>
+  <script type="text/javascript">
+    let errorMessage = JSON.parse(sessionStorage.paymentError)
+    if (errorMessage) {
+      document.getElementById('errorMessage').textContent = 'Error message: ' + errorMessage
+    }
+  </script>
 </html>
