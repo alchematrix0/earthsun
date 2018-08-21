@@ -88,3 +88,10 @@ div.hero-foot .tabs.is-toggle li:first-child a {
 div.hero-foot .tabs.is-toggle li:last-child a {
   border-radius: 0;
 }
+
+section.hero#mainHeroBody {
+  background: no-repeat center/100% url('./img/dm/3boxesLav.jpg');
+}
+
+section.section#about { background-color: none; }
+div#aboutBanner { }
