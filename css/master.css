@@ -14,6 +14,10 @@ a:hover, span:hover {
   color: #3273dc;
 }
 
+.hero.is-warning {
+  background-color: #e9f3d5;
+}
+
 #copyButton:hover {
   cursor: pointer;
 }
@@ -52,7 +56,7 @@ a:hover, span:hover {
 }
 
 article.media {
-  background-color: whitesmoke;
+  background-color: #d9e9f380;
   padding: 1rem 1rem 0 1rem;
 }
 
@@ -76,9 +80,17 @@ article .image.is-128x128 {
   margin-top: 1rem;
 }
 
+div.hero-foot {
+  margin-bottom: 1em;
+}
+
 div.hero-foot nav.tabs.is-toggle a {
   border-color: #363636;
   border-radius: 0;
+}
+
+div.hero-foot nav.tabs.is-toggle a:hover {
+  background-color: lavender;
 }
 
 div.hero-foot .tabs.is-toggle li:first-child a {
@@ -91,6 +103,13 @@ div.hero-foot .tabs.is-toggle li:last-child a {
 
 section.hero#mainHeroBody {
   background: no-repeat center/100% url('./img/dm/3boxesLav.jpg');
+  background-position-y: top 60%;
+}
+
+@media screen and (max-width: 600px) {
+  section.hero#mainHeroBody {
+    background: no-repeat center/100% url('./img/dm/3stack-narrow.jpg');
+  }
 }
 
 section.section#about { background-color: none; }
