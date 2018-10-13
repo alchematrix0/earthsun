@@ -10,12 +10,28 @@ a:hover, span:hover {
   text-decoration: none;
 }
 
+@media screen and (min-width: 768px) {
+  div.hero-body.wholesale {
+    padding: 0;
+  }
+}
+
 .hero.is-warning a.link {
   color: #3273dc;
 }
 
 .hero.is-warning {
   background-color: #e9f3d5;
+}
+
+@media screen and (max-width: 768px) {
+  div.navbar-brand .navbar-item {
+    margin: auto;
+    top: 20px;
+  }
+  div.navbar-brand .navbar-item img {
+    max-height: 3rem;
+  }
 }
 
 #copyButton:hover {
@@ -89,8 +105,12 @@ div.hero-foot nav.tabs.is-toggle a {
   border-radius: 0;
 }
 
-div.hero-foot nav.tabs.is-toggle a:hover {
+div.hero-foot nav.tabs.is-toggle li:not(.is-active) a:hover {
   background-color: lavender;
+}
+
+div.hero-foot nav.tabs.is-toggle li.is-active a:hover {
+  cursor: default;
 }
 
 div.hero-foot .tabs.is-toggle li:first-child a {
@@ -99,6 +119,10 @@ div.hero-foot .tabs.is-toggle li:first-child a {
 
 div.hero-foot .tabs.is-toggle li:last-child a {
   border-radius: 0;
+}
+
+ul li.is-active:hover {
+  background-color: inherit;
 }
 
 section.hero#mainHeroBody {
@@ -110,6 +134,14 @@ section.hero#mainHeroBody {
   section.hero#mainHeroBody {
     background: no-repeat center/100% url('./img/dm/3stack-narrow.jpg');
   }
+}
+
+span.rememberMe, #sameAddressCheckbox {
+  margin-left: 5px;
+  position: absolute;
+  min-width: 200px;
+  top: 5px;
+  left: 20px;
 }
 
 section.section#about { background-color: none; }

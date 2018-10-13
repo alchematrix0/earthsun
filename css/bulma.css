@@ -7936,7 +7936,7 @@ label.panel-block:hover {
 .tabs.is-boxed li.is-active a {
   background-color: white;
   border-color: #dbdbdb;
-  border-bottom-color: transparent !important;
+  /* border-bottom-color: transparent !important; */
 }
 
 .tabs.is-fullwidth li {

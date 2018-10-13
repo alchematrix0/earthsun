@@ -20,7 +20,7 @@
         height: 0
       }
     </style>
-    <section class="hero is-warning is-bold is-fullheight">
+    <section class="hero is-fullheight">
       <div class="hero-head">
         <header class="navbar">
           <div class="container">
@@ -32,7 +32,7 @@
           </div>
         </header>
       </div>
-      <div class="hero-body">
+      <div class="hero-body wholesale">
         <div class="container">
 
           <div class="columns">
@@ -65,12 +65,9 @@
                     </div>
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" type="email" autocomplete="email" name="email" placeholder="Email" value="" required>
+                        <input class="input" type="email" autocomplete="email" name="email" placeholder="Email" value="" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: mail;"></span>
-                        </span>
-                        <span class="icon is-small is-right">
-                          <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: check;"></span>
                         </span>
                       </p>
                     </div>
@@ -91,7 +88,7 @@
                     </div>
                     <div class="field">
                       <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" placeholder="Company" value="" autocomplete="company" name="company" required>
+                        <input class="input" placeholder="Company" value="" autocomplete="company" name="company" required>
                         <span class="icon is-small is-left">
                           <span class="uk-icon uk-light uk-text-primary" uk-icon="icon: world;"></span>
                         </span>
@@ -99,21 +96,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="field is-horizontal" style="line-height: 2;">
-                  <div class="field-label">
-                    <label class="label">Return customer?</label>
-                  </div>
-                  <div class="field-body">
-                    <div class="field is-narrow">
-                      <label class="checkbox" style="padding: 2px;">
-                        Yes!
-                        <input name="returnCustomer" style="vertical-align: text-bottom; margin-left: 5px; padding: 10px;" id="returnCustomerCheckbox" type="checkbox">
-                      </label>
-                    </div>
-                    <p style="font-size: 0.9rem;" class="help">If so, we can retrieve your payment info via your email</p>
-                  </div>
-                </div> -->
 
                 <div id="cardField" class="field is-horizontal">
                   <div class="field-label">
@@ -231,13 +213,6 @@
                           Create Wholesale Account
                         </button>
                       </div>
-                      <div class="control">
-                        <a href="./wholesale.html">
-                          <button class="button is-pulled-right">
-                            Back
-                          </button>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -249,14 +224,18 @@
         </div>
       </div>
       <div class="hero-foot">
-        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+        <nav class="tabs is-toggle is-boxed is-fullwidth">
           <div class="container">
             <ul>
               <li>
-                <a href="./store.html">Shop</a>
+                <a href="./wholesale.html">
+                  Order
+                </a>
               </li>
               <li class="is-active">
-                <a>Wholesale</a>
+                <a href="./account.html">
+                  Account
+                </a>
               </li>
               <li>
                 <a href="./contact.html">Contact</a>
