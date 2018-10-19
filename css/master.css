@@ -13,6 +13,7 @@ a:hover, span:hover {
 @media screen and (min-width: 768px) {
   div.hero-body.wholesale {
     padding: 0;
+    padding-bottom: 2em;
   }
 }
 
