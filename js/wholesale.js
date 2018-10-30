@@ -1,10 +1,8 @@
-var serverURL = 'https://www.earthsun.ca'
-var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
-// var serverURL = 'http://localhost:3000'
-// var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
-
+// var serverURL = 'https://www.earthsun.ca'
+// var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
+var serverURL = 'http://localhost:3000'
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var form = document.getElementById('wholesale-order')
-
 var db = document.getElementsByClassName('delete')
 for (var i = 0; i < db.length; i++) {
   db[i].addEventListener('click', function (e) {
@@ -12,11 +10,11 @@ for (var i = 0; i < db.length; i++) {
   })
 }
 let catalog = {
-  'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Beleai skin cleanser', price: 480},
-  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Bio Shield: sun protection', price: 320},
-  'ES-SUN-008': {title: 'Sun Shield 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun sheer: sun protection', price: 320},
-  'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Gentle coconut ointment', price: 280},
-  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun child: sun protection for children', price: 320}
+  // 'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Beleai skin cleanser', price: 299.88 },
+  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Bio Shield: sun protection', price: 299.88 },
+  'ES-SUN-008': {title: 'Sun Sheer 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun sheer: sun protection', price: 299.88 },
+  // 'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Gentle coconut ointment', price: 299.88 },
+  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Sun child: sun protection for children', price: 299.88 }
   // 'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
   // 'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
   // 'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
@@ -29,17 +27,58 @@ const wholesaleSkus = {
   'ES-BUM-010': 'WS-BUM-010',
   'ES-CHI-010': 'WS-CHI-010'
 }
+const wholesalePrices = {
+  base: 299.88,
+  four: 269.88,
+  nine: 239.88
+}
+let wsOrder = {
+  sunchild: 0,
+  bioshield: 0,
+  sunsheer: 0
+}
+let totals = {
+  tax: 0,
+  shipping: 0,
+  total: 0
+}
 if (sessionStorage.wholesaleAccount) {
   let account = JSON.parse(sessionStorage.wholesaleAccount)
   document.getElementById('accountNumberInput').value = account.id
   document.getElementById('accountEmailInput').value = account.email
 }
-
 if (localStorage.earthsunAccountId) {
   document.getElementById('accountNumberInput').value = localStorage.earthsunAccountId
   document.getElementById('accountEmailInput').value = localStorage.earthsunAccountEmail
 }
-
+window.addEventListener('load', function () {
+  let caseInputs = document.querySelectorAll('input.quantityInput')
+  caseInputs.forEach(function (i, index, arr) {
+    wsOrder[i.dataset.item] = Number(i.value)
+    if (index === arr.length - 1) { computeTaxesAndShipping(wsOrder) }
+    i.addEventListener('change', function () {
+      wsOrder[i.dataset.item] = Number(i.value)
+      computeTaxesAndShipping(wsOrder)
+    })
+  })
+})
+function computeTaxesAndShipping(order) {
+  let t = 0
+  let numberOfCases = 0
+  for (let item in order) {
+    let quantity = document.getElementById(`preview-${item}-quantity`)
+    quantity.innerHTML = order[item]
+    console.log(quantity)
+    numberOfCases += order[item]
+    t += order[item] < 4 ? wholesalePrices.base * order[item] : order[item] < 9 ? wholesalePrices.four * order[item] : wholesalePrices.nine * order[item]
+  }
+  let total = document.getElementById(`preview-total`)
+  total.innerHTML = t
+  let shipping = document.getElementById(`preview-shipping`)
+  shipping.innerHTML = numberOfCases * 25
+  let taxes = document.getElementById(`preview-taxes`)
+  taxes.innerHTML = (t * 0.05).toFixed(2)
+}
 form.addEventListener('submit', event => {
 
   event.preventDefault();
@@ -57,13 +96,17 @@ form.addEventListener('submit', event => {
   }
   let order = []
   for (sku in catalog) {
-    if (catalog[sku].quantity > 0) {
+    let quantity = catalog[sku].quantity
+    if (quantity > 0) {
       let item = catalog[sku]
+      let price = quantity < 4 ? wholesalePrices.base : quantity < 9 ? wholesalePrices.four : wholesalePrices.nine
       order.push({
-        amount: item.price * 100,
+        amount: price * 100,
         currency: 'cad',
+        price,
         parent: wholesaleSkus[sku],
         quantity: item.quantity,
+        units: item.quantity * 12,
         type: 'sku'
       })
     }
@@ -87,7 +130,8 @@ form.addEventListener('submit', event => {
       response.data.customer.details = details
       sessionStorage.setItem('wholesaleAccount', JSON.stringify(response.data.customer))
       console.log('got a source')
-      axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
+      // axios.post(`${serverURL}/createWholesaleOrder`, {customer: response.data.customer, order},
+      axios.post(`${serverURL}/chargeWholesaleOrder`, {customer: response.data.customer, order},
         {
           headers: {
             'Content-type': 'application/json',
@@ -116,8 +160,11 @@ form.addEventListener('submit', event => {
   .catch(error => {
     document.getElementById('submitCreateWholesaleOrder').className = 'button is-danger'
     document.getElementById('submitCreateWholesaleOrder').innerHTML = 'failed'
-    document.getElementById('errorBox').innerHTML = `Error message: ${error.message}`
+    setTimeout(function () {
+      document.getElementById('submitCreateWholesaleOrder').className = 'button is-info'
+      document.getElementById('submitCreateWholesaleOrder').innerHTML = 'Create Wholesale Order'
+    }, 4000)
+    document.getElementById('errorBox').innerHTML = `Order could not be placed. Error message: ${error.message}`
     console.error(error)
-    // update UI to notify user of error
   })
 })

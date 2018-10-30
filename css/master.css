@@ -137,7 +137,7 @@ section.hero#mainHeroBody {
   }
 }
 
-span.rememberMe, #sameAddressCheckbox {
+span.rememberMe, #sameAddressCheckbox, span.express {
   margin-left: 5px;
   position: absolute;
   min-width: 200px;
