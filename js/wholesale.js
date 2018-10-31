@@ -4,10 +4,7 @@ var serverURL = 'https://www.earthsun.ca'
 var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var testMode = true
 
-const headers =  {
-  'Content-type': 'application/json',
-  'Accept': 'application/json'
-}
+const headers = { 'Content-type': 'application/json', 'Accept': 'application/json' }
 var form = document.getElementById('wholesale-order')
 var db = document.getElementsByClassName('delete')
 for (var i = 0; i < db.length; i++) {
@@ -155,7 +152,7 @@ form.addEventListener('submit', event => {
           type: 'shipping'
         })
         console.dir(order)
-        axios.post(`${serverURL}/createinvoice`, { customer: response.data.customer, order }, { headers })
+        axios.post(`${serverURL}/createWholesaleOrder`, { customer: response.data.customer, order }, { headers })
         .then(response => {
           console.dir(response)
           console.dir(response.data)
