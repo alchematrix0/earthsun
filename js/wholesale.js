@@ -1,11 +1,11 @@
 // var serverURL = 'https://www.earthsun.ca'
 // var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
 var serverURL = 'http://localhost:3000'
+var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 const headers =  {
   'Content-type': 'application/json',
   'Accept': 'application/json'
 }
-var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var form = document.getElementById('wholesale-order')
 var db = document.getElementsByClassName('delete')
 for (var i = 0; i < db.length; i++) {
@@ -56,6 +56,12 @@ if (localStorage.earthsunAccountId) {
   document.getElementById('accountEmailInput').value = localStorage.earthsunAccountEmail
 }
 window.addEventListener('load', function () {
+  if (serverURL.includes('localhost')) {
+    window.addEventListener('load', function () {
+      let s = document.getElementById('isTest')
+      s.innerHTML = ('(Test mode)')
+    })
+  }
   let expressShippingCheckbox = document.getElementById('express')
   expressShippingCheckbox.addEventListener('change', function () { computeTaxesAndShipping(wsOrder, expressShippingCheckbox.checked)})
   let caseInputs = document.querySelectorAll('input.quantityInput')
