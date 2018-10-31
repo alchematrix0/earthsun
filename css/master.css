@@ -10,6 +10,10 @@ a:hover, span:hover {
   text-decoration: none;
 }
 
+.is-hidden {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   div.hero-body.wholesale {
     padding: 0;

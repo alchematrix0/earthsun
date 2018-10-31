@@ -82,7 +82,8 @@ form.addEventListener('submit', event => {
       contactName: `${inputs.name.value}`,
       details: inputs.details.value,
       billingLine1: billing.line1,
-      billingPostal: billing.postal_code
+      billingPostal: billing.postal_code,
+      defer: false
     }
   }
 

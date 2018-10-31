@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./css/master.css">
   </head>
   <body>
-    <section class="hero is-warning is-bold is-fullheight">
+    <section class="hero is-fullheight">
       <div class="hero-head">
         <header class="navbar">
           <div class="container">
@@ -39,14 +39,19 @@
                   <h1 class="title">
                     Order placed!
                   </h1>
-                  <p>Thank you for shopping at Earth Sun</p>
-                  <p>We have e-mailed you a receipt and your items will be shipping ASAP!</p>
+                  <p>Thank you for shopping at Earth Sun!</p>
+
                   <br>
                   <div class="box notification has-text-centered" id="checkoutParent">
+                    <p class="is-hidden" id="autocharge">Your payment will be processed within the hour and a receipt sent to your inbox.</p>
+                    <p class="is-hidden" id="deferred">An invoice will be sent to your inbox. <br /> You may settle this invoice at any time, or we will process your payment in 30 days.</p>
+                    <br />
+                    <p>Questions? Use the <a href="/contact">contact page</a> to get help. <span id="invnum"></span></p>
+                    <p>You can also reach us by phone at 1 (855) 620-9131</p>
+                  </div>
+                  <!-- <div class="box notification has-text-centered" id="checkoutParent">
                     <style media="screen">
-                      .media + .media {
-                        margin-top: 0;
-                      }
+                      .media + .media { margin-top: 0; }
                     </style>
                     <article class="media" id="checkoutTemplate">
                       <figure class="media-left">
@@ -66,8 +71,7 @@
                         </div>
                       </div>
                     </article>
-                  </div>
-
+                  </div> -->
                 </div>
               </div>
 
@@ -77,14 +81,11 @@
       </div>
 
       <div class="hero-foot">
-        <nav class="tabs is-toggle is-large is-boxed is-fullwidth">
+        <nav class="tabs is-toggle is-boxed is-fullwidth">
           <div class="container">
             <ul>
               <li>
-                <a href="./store.html">Shop</a>
-              </li>
-              <li class="is-hidden-mobile">
-                <a href="./wholesale.html">Wholesale</a>
+                <a href="./wholesale.html">Order</a>
               </li>
               <li>
                 <a href="./contact.html">Contact</a>
@@ -95,41 +96,56 @@
       </div>
     </section>
 
-    <script src="./js/receiptImgs.js" type="text/javascript"></script>
-    <script src="./js/receipt.js" type="text/javascript"></script>
+    <!-- <script src="./js/receiptImgs.js" type="text/javascript"></script>
+    <script src="./js/receipt.js" type="text/javascript"></script> -->
 
     <script type="text/javascript">
-      let order = JSON.parse(sessionStorage.order)
-      let dispatchResults = JSON.parse(sessionStorage.dispatchResults)
-      cart = JSON.parse(sessionStorage.cart)
+      let order = JSON.parse(sessionStorage.order || [])
+      // let dispatchResults = JSON.parse(sessionStorage.dispatchResults || {})
+      let invoice = JSON.parse(sessionStorage.invoice || {})
+      cart = JSON.parse(sessionStorage.cart || {})
       let total = 0
-      const container = document.getElementById('checkoutParent')
-      const template = document.getElementById('checkoutTemplate')
-      for (sku in cart) {
-        total ++
-        if (cart[sku].quantity) {
-          let item = template.cloneNode(true)
-          item.id = `${sku}`
-          container.appendChild(item)
-          item.childNodes.forEach(node => {
-            switch (node.className) {
-              case 'media-left':
-                node.lastElementChild.firstElementChild.setAttribute('src', `./css/img/thumbs/${sku}.png`)
-              break
-              case 'media-content':
-                node.childNodes[1].firstElementChild.childNodes[1].innerHTML = `${cart[sku].quantity}x ${cart[sku].title}`
-                node.childNodes[1].firstElementChild.childNodes[5].innerHTML = `$${cart[sku].price * cart[sku].quantity}`
-              break
-            }
-          })
-        }
-        if (total === 1) {
-          container.removeChild(template)
-        }
+      console.dir(invoice)
+      console.dir(order)
+      console.dir(cart)
+      let invnum = document.getElementById('invnum')
+      if (invoice.number) {
+        invnum.innerHTML = `Be sure to include your invoice number: ${invoice.number}`
       }
-      if (cart && order) {
-        genReceipt(cart, order, typeof dispatchResults.orderId !== 'undefined' ? dispatchResults.orderId : null)
+      if (invoice.billing === 'charge_automatically') {
+        let auto = document.getElementById('autocharge')
+        auto.classList = ''
+      } else {
+        let def = document.getElementById('deferred')
+        def.classList = ''
       }
+      // const container = document.getElementById('checkoutParent')
+      // const template = document.getElementById('checkoutTemplate')
+      // for (sku in cart) {
+      //   total ++
+      //   if (cart[sku].quantity) {
+      //     let item = template.cloneNode(true)
+      //     item.id = `${sku}`
+      //     container.appendChild(item)
+      //     item.childNodes.forEach(node => {
+      //       switch (node.className) {
+      //         case 'media-left':
+      //           node.lastElementChild.firstElementChild.setAttribute('src', `./css/img/thumbs/${sku}.png`)
+      //         break
+      //         case 'media-content':
+      //           node.childNodes[1].firstElementChild.childNodes[1].innerHTML = `${cart[sku].quantity}x ${cart[sku].title}`
+      //           node.childNodes[1].firstElementChild.childNodes[5].innerHTML = `$${cart[sku].price * cart[sku].quantity}`
+      //         break
+      //       }
+      //     })
+      //   }
+      //   if (total === 1) {
+      //     container.removeChild(template)
+      //   }
+      // }
+      // if (cart && order) {
+      //   genReceipt(cart, order, typeof dispatchResults.orderId !== 'undefined' ? dispatchResults.orderId : null)
+      // }
     </script>
   </body>
 </html>

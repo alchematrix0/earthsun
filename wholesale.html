@@ -27,10 +27,10 @@
             <div class="navbar-brand">
               <a href="./index.html" class="navbar-item">
                 <img src="./css/img/logo-horizontal.svg" alt="Earth Sun">
-                <span>Wholesale</span>
+                <span class="is-hidden-mobile">Wholesale</span>
               </a>
             </div>
-            <div class="navbar-end">
+            <div class="navbar-end is-hidden-mobile">
               <div class="navbar-item">
                 <a href="https://earthsun.shopify.com">
                   Retail store
@@ -44,7 +44,7 @@
         <div class="container">
           <form id="wholesale-order" method="post">
             <div class="columns">
-              <div class="column is-9 is-offset-2">
+              <div class="column is-10 is-offset-1">
                 <article class="media">
                   <figure class="media-left is-hidden-mobile">
                     <p class="image is-128x128">
@@ -52,9 +52,9 @@
                   </figure>
                   <div class="media-content">
                     <div class="content" style="margin-bottom: 1em">
-                      <p>Minimum Wholesale Order – 1 case of 12 jars. CAD $299.88 ($24.99 per Jar)<br />
-                      Purchase 4 or more cases in one order, CAD $269.88 per case of 12 jars ($22.49 per Jar)<br />
-                      Purchase 9 or more cases in one order, CAD $239.88 per case of 12 jars ($19.99 per Jar)</p>
+                      <p>Minimum Wholesale Order – 1 case of 12 jars. CAD $299.88 ($24.99 per Jar)</p>
+                      <p>Purchase 4 or more cases in one order, CAD $269.88 per case ($22.49 per Jar)</p>
+                      <p>Purchase 9 or more cases in one order, CAD $239.88 per case ($19.99 per Jar)</p>
                       <p>Suggested Retail Price is CAD $39.99 per jar.</p>
                       <p>Shipping in Canada: $12.75/case (5-7 days) or $32 express (2 day)</p>
                       <p>Shipping to USA: $20/case (2-3 weeks) or $65 express (2 day)</p>
@@ -77,7 +77,7 @@
                         <label for="bioshield">cases of 12</label>
                         <br>
                       </p>
-                      <p style="margin-bottom: 1em;">
+                      <p class="is-hidden-mobile" style="margin-bottom: 1em;">
                         Zeolite is a powerful detoxing agent essential to restore and maintain optimum skin health.
                         Zeolite is absordbed in the body through the skin purging free-radicals that cause aging, toxic chemicals, heavy metals, radioactive ions and unhealthy cells.
                       </p>
@@ -103,7 +103,7 @@
                         <label for="sunchild">cases of 12</label>
                         <br>
                       </p>
-                      <p style="margin-bottom: 1em;">
+                      <p class="is-hidden-mobile" style="margin-bottom: 1em;">
                         SunChild is a chemical-free alternative to toxic commercial sunscreens formulated for children. Zeolite builds sun tolerance over time resulting in proteection comparable to SPF 50 sunscreen.
                         Removing excess stored UV rays in the skin, SunChild can be used both before and after exposure to greatly mitigate skin damage and sunburn.
                       </p>
@@ -129,7 +129,7 @@
                         <label for="sunsheer">cases of 12</label>
                         <br>
                       </p>
-                      <p style="margin-bottom: 1em;">
+                      <p class="is-hidden-mobile" style="margin-bottom: 1em;">
                         SunSheer assists the body in building sun tolerance over time while permitting the vitamins, and melanin, from sunlight to enter the skin cells.
                         Trapping radiation, zeolite is an innovative way to protect and detoxify the skin at a cellular level. After consitent use, SunSheer is equivalent to SPF 50 sunscreen.
                       </p>
@@ -150,18 +150,18 @@
                         <strong>Order summary</strong>
                         <ul>
                           <li id="preview-bioshield">
-                            <span id="preview-bioshield-quantity">0</span> cases of Bioshield at $<span id="preview-bioshield-price">299.88</span>CAD per case
+                            <span id="preview-bioshield-quantity">0</span> cases of Bioshield at $<span class="preview-price">299.88</span>CAD per case
                           </li>
                           <li id="preview-sunchild">
-                            <span id="preview-sunchild-quantity">0</span> cases of Sunchild at $<span id="preview-sunchild-price">299.88</span>CAD per case
+                            <span id="preview-sunchild-quantity">0</span> cases of Sunchild at $<span class="preview-price">299.88</span>CAD per case
                           </li>
                           <li id="preview-sunsheer">
-                            <span id="preview-sunsheer-quantity">0</span> cases of Sunsheer at $<span id="preview-sunsheer-price">299.88</span>CAD per case
+                            <span id="preview-sunsheer-quantity">0</span> cases of Sunsheer at $<span class="preview-price">299.88</span>CAD per case
                           </li>
                         </ul>
                       </p>
                       <p style="margin-bottom: 0.25em;">
-                        Shipping: <span id="preview-shipping">0</span>
+                        Shipping: <span id="preview-shipping-ca">0</span> (CA) <span id="preview-shipping-us">0</span> (USA)
                       </p>
                       <p style="margin-bottom: 0.25em;">
                         Taxes: <span id="preview-taxes">0</span>
@@ -404,7 +404,7 @@
           <div class="container">
             <ul>
               <li class="is-active">
-                <a>Order</a>
+                <a>Wholesale</a>
               </li>
               <li>
                 <a href="./account.html">Account</a>
