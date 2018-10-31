@@ -57,10 +57,8 @@ if (localStorage.earthsunAccountId) {
 }
 window.addEventListener('load', function () {
   if (serverURL.includes('localhost')) {
-    window.addEventListener('load', function () {
-      let s = document.getElementById('isTest')
-      s.innerHTML = ('(Test mode)')
-    })
+    let s = document.getElementById('isTest')
+    s.innerHTML = ('(Test mode) ')
   }
   let expressShippingCheckbox = document.getElementById('express')
   expressShippingCheckbox.addEventListener('change', function () { computeTaxesAndShipping(wsOrder, expressShippingCheckbox.checked)})
