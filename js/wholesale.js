@@ -1,8 +1,9 @@
-var serverURL = 'https://www.earthsun.ca'
+// var serverURL = 'https://www.earthsun.ca'
 // var stripe = Stripe('pk_live_wQ8l7gZKVSvCfc5P6E0Qq2Lq')
-// var serverURL = 'http://localhost:3000'
+var serverURL = 'http://localhost:3000'
 var stripe = Stripe('pk_test_u77KpSLxrO1jKMrKyA9CZWhy');
 var testMode = true
+
 const headers =  {
   'Content-type': 'application/json',
   'Accept': 'application/json'
@@ -87,7 +88,7 @@ function computeTaxesAndShipping(order, isExpress) {
     el.innerHTML = numberOfCases < 4 ? wholesalePrices.base : numberOfCases < 9 ? wholesalePrices.four : wholesalePrices.nine
   })
   let total = document.getElementById(`preview-total`)
-  total.innerHTML = t.toFixed(2)
+  total.innerHTML = `${t.toFixed(2)} + shipping`
   totals.total = Number(t)
   let shipping_ca = document.getElementById(`preview-shipping-ca`)
   let shipping_us = document.getElementById(`preview-shipping-us`)
@@ -96,8 +97,8 @@ function computeTaxesAndShipping(order, isExpress) {
   shipping_ca.innerHTML = (numberOfCases * (isExpress ? 32 : 12.75)).toFixed(2)
   shipping_us.innerHTML = (numberOfCases * (isExpress ? 65 : 20)).toFixed(2)
   let taxes = document.getElementById(`preview-taxes`)
-  totals.taxes = t * 0.05
-  taxes.innerHTML = (t * 0.05).toFixed(2)
+  totals.taxes = t * 0.12
+  taxes.innerHTML = (t * 0.12).toFixed(2)
 }
 form.addEventListener('submit', event => {
 
@@ -153,7 +154,8 @@ form.addEventListener('submit', event => {
           quantity: 1,
           type: 'shipping'
         })
-        axios.post(`${serverURL}/createWholesaleInvoice`, { customer: response.data.customer, order }, { headers })
+        console.dir(order)
+        axios.post(`${serverURL}/createinvoice`, { customer: response.data.customer, order }, { headers })
         .then(response => {
           console.dir(response)
           console.dir(response.data)
