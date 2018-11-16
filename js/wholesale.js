@@ -42,8 +42,11 @@ let wsOrder = {
 }
 let totals = {
   tax: 0,
-  shipping: {ca: 0, us: 0},
-  total: 0
+  shipping: {ca: 0, us: 0, base_ca: 0, base_us: 0},
+  numberOfCases: 0,
+  subtotal: 0,
+  total_ca: 0,
+  total_us: 0
 }
 if (sessionStorage.wholesaleAccount) {
   let account = JSON.parse(sessionStorage.wholesaleAccount)
@@ -67,37 +70,49 @@ window.addEventListener('load', function () {
     if (index === arr.length - 1) { computeTaxesAndShipping(wsOrder, expressShippingCheckbox.checked) }
     i.addEventListener('change', function () {
       wsOrder[i.dataset.item] = Number(i.value)
-      computeTaxesAndShipping(wsOrder)
+      computeTaxesAndShipping(wsOrder, expressShippingCheckbox.checked)
     })
   })
+  computeTaxesAndShipping(wsOrder, expressShippingCheckbox.checked)
 })
 function computeTaxesAndShipping(order, isExpress) {
   let t = 0
   let numberOfCases = 0
+  let caseRate = 299.88
   for (let item in order) {
-    let quantity = document.getElementById(`preview-${item}-quantity`)
-    quantity.innerHTML = order[item]
+    document.getElementById(`preview-${item}-quantity`).innerHTML = order[item]
     numberOfCases += order[item]
-    t += numberOfCases < 4 ? wholesalePrices.base * order[item] : numberOfCases < 9 ? wholesalePrices.four * order[item] : wholesalePrices.nine * order[item]
+    caseRate = numberOfCases < 4 ? wholesalePrices.base : numberOfCases < 9 ? wholesalePrices.four : wholesalePrices.nine
+    t = numberOfCases * caseRate
   }
-  let pricePreviews = document.querySelectorAll('span.preview-price')
-  pricePreviews.forEach(function (el) {
+  document.querySelectorAll('span.preview-price').forEach(function (el) {
     el.innerHTML = numberOfCases < 4 ? wholesalePrices.base : numberOfCases < 9 ? wholesalePrices.four : wholesalePrices.nine
   })
-  let total = document.getElementById(`preview-total`)
-  total.innerHTML = `${t.toFixed(2)} + shipping`
-  totals.total = Number(t)
+  let subtotal = document.getElementById(`preview-subtotal`)
+  let total_ca = document.getElementById(`preview-total-ca`)
+  let total_us = document.getElementById(`preview-total-us`)
+  totals.numberOfCases = numberOfCases
+
+  totals.shipping.ca = Number(numberOfCases * (isExpress ? 28.50 : 11.40))
+  totals.shipping.us = Number(numberOfCases * (isExpress ? 58 : 17.85))
+  totals.shipping.base_ca = isExpress ? 28.50 : 11.40
+  totals.shipping.base_us = isExpress ? 58 : 17.85
+  totals.isExpress = isExpress
+
+  totals.total_ca = 1.12 * (t + totals.shipping.ca)
+  totals.total_us = 1.12 * (t + totals.shipping.us)
+  total_ca.innerHTML = totals.total_ca.toFixed(2)
+  total_us.innerHTML = totals.total_us.toFixed(2)
+  totals.subtotal = t
+  subtotal.innerHTML = totals.subtotal.toFixed(2)
+
   let shipping_ca = document.getElementById(`preview-shipping-ca`)
   let shipping_us = document.getElementById(`preview-shipping-us`)
-  totals.shipping.ca = Number(numberOfCases * (isExpress ? 32 : 12.75))
-  totals.shipping.us = Number(numberOfCases * (isExpress ? 65 : 20))
-  shipping_ca.innerHTML = (numberOfCases * (isExpress ? 32 : 12.75)).toFixed(2)
-  shipping_us.innerHTML = (numberOfCases * (isExpress ? 65 : 20)).toFixed(2)
-  let taxes = document.getElementById(`preview-taxes`)
-  totals.taxes = t * 0.12
-  taxes.innerHTML = (t * 0.12).toFixed(2)
+  shipping_ca.innerHTML = (numberOfCases * (isExpress ? 28.50 : 11.40)).toFixed(2)
+  shipping_us.innerHTML = (numberOfCases * (isExpress ? 58 : 17.85)).toFixed(2)
 }
-form.addEventListener('submit', event => {
+
+form.addEventListener('submit', function (event) {
 
   event.preventDefault();
   for (var item in catalog) {
@@ -114,12 +129,13 @@ form.addEventListener('submit', event => {
     let name = catalog[sku].name
     if (quantity > 0) {
       let item = catalog[sku]
-      let price = quantity < 4 ? wholesalePrices.base : quantity < 9 ? wholesalePrices.four : wholesalePrices.nine
+      let price = totals.numberOfCases < 4 ? wholesalePrices.base : totals.numberOfCases < 9 ? wholesalePrices.four : wholesalePrices.nine
       order.push({
         amount: price * 100,
         currency: 'cad',
         price,
         name,
+        type: 'case',
         parent: wholesaleSkus[sku],
         quantity: item.quantity,
         units: item.quantity * 12,
@@ -131,7 +147,7 @@ form.addEventListener('submit', event => {
     console.dir(order)
     document.getElementById('submitCreateWholesaleOrder').className = 'button is-loading is-info'
     axios.post(`${serverURL}/retrieveCustomer`, { customer }, { headers })
-    .then(response => {
+    .then(function(response) {
       console.log('return from post to server')
       console.dir(response)
       if (response.data.error) {
@@ -144,16 +160,20 @@ form.addEventListener('submit', event => {
           localStorage.setItem('earthsunAccountEmail', response.data.customer.email)
         }
         console.log('got a source')
+        console.dir(totals)
+        console.dir(response.data.customer.shipping.address)
+        let isUs = `${response.data.customer.shipping.address.country}` !== 'Canada' && `${response.data.customer.shipping.address.country}` !== 'CA'
         order.push({
-          amount: Number(totals.shipping[`${response.data.customer.shipping.address.country}` === 'Canada' ? 'ca' : 'us']) * 100,
+          amount: Number(totals.shipping[isUs ? 'base_us' : 'base_ca']) * 100,
           currency: 'cad',
           name: 'Shipping',
-          quantity: 1,
+          quantity: totals.numberOfCases,
+          description: !isUs ? totals.isExpress ? 'Domestic Express shipping' : 'Domestic shipping' : totals.isExpress ? 'US Express shipping' : 'US shipping',
           type: 'shipping'
         })
         console.dir(order)
         axios.post(`${serverURL}/createWholesaleOrder`, { customer: response.data.customer, order }, { headers })
-        .then(response => {
+        .then(function(response) {
           console.dir(response)
           console.dir(response.data)
           if (response.error) {
@@ -170,7 +190,7 @@ form.addEventListener('submit', event => {
           sessionStorage.setItem('error', JSON.stringify(response.data.error))
           window.location.href = './thankyou.html'
         })
-        .catch(error => {
+        .catch(function (error) {
           console.log('caught error')
           document.getElementById('submitCreateWholesaleOrder').className = 'button is-info'
           document.getElementById('errorBox').innerHTML = `Payment failure: ${error.response.data}`
@@ -181,7 +201,7 @@ form.addEventListener('submit', event => {
         window.location.href = './addPaymentSource.html'
       }
     })
-    .catch(error => {
+    .catch(function (error) {
       document.getElementById('submitCreateWholesaleOrder').className = 'button is-danger'
       document.getElementById('submitCreateWholesaleOrder').innerHTML = 'failed'
       setTimeout(function () {
