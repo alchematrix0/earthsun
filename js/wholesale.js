@@ -14,10 +14,10 @@ for (var i = 0; i < db.length; i++) {
 }
 let catalog = {
   // 'ES-BEL-010': {title: 'Belereai 12 pack', quantity: 0, wholesaleAmount: 12, description: 'Beleai skin cleanser', price: 299.88 },
-  'ES-BIO-010': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Bio Shield', description: 'Bio Shield: sun protection', price: 299.88 },
-  'ES-SUN-008': {title: 'Sun Sheer 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Sun Sheer', description: 'Sun sheer: sun protection', price: 299.88 },
+  'ES-BS-18': {title: 'Bio Shield 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Bio Shield', description: 'Bio Shield: sun protection', price: 299.88 },
+  'ES-SS-18': {title: 'Sun Sheer 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Sun Sheer', description: 'Sun sheer: sun protection', price: 299.88 },
   // 'ES-BUM-010': {title: 'Coco Bum 12 pack', quantity: 0, wholesaleAmount: 12, name: 'BioShield', description: 'Gentle coconut ointment', price: 299.88 },
-  'ES-CHI-010': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Sun Child', description: 'Sun child: sun protection for children', price: 299.88 }
+  'ES-SC-18': {title: 'Sun Child 12 pack', quantity: 0, wholesaleAmount: 12, name: 'Sun Child', description: 'Sun child: sun protection for children', price: 299.88 }
   // 'ES-5PK': {title: '5 Pack half dozen', quantity: 0, wholesaleAmount: 6, price: 900},
   // 'BEL-BUM-2PK': {title: '2 pack: Belerai + Cocobum half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
   // 'SUN-CHI-2PK': {title: '2 pack: Sun Shielf + Sun Child half dozen', quantity: 0, wholesaleAmount: 6, price: 240},
@@ -28,7 +28,10 @@ const wholesaleSkus = {
   'ES-BIO-010': 'WS-BIO-010',
   'ES-SUN-008': 'WS-SUN-008',
   'ES-BUM-010': 'WS-BUM-010',
-  'ES-CHI-010': 'WS-CHI-010'
+  'ES-CHI-010': 'WS-CHI-010',
+  'ES-BS-18': 'WS-BIO-010',
+  'ES-SS-18': 'WS-SUN-008',
+  'ES-SC-18': 'WS-CHI-010'
 }
 const wholesalePrices = {
   base: 299.88,
